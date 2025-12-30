@@ -1,6 +1,12 @@
+import 'package:flashcard/ui/cardify_app.dart';
 import 'package:flutter/material.dart';
-import 'ui/widgets/flashcard.dart';
 
 void main() {
-  runApp(const FlashCardApp());
+  
+  runApp(
+    const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: CardifyApp(),
+    ),
+  );
 }
