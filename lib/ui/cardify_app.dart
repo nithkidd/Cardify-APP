@@ -9,11 +9,17 @@ class CardifyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Cardify App", style: TextStyle(color: Colors.white)),
-        backgroundColor: const Color(0xFF070706),
+        title: SizedBox(
+          height: 80,
+          child: Image.asset(
+            'lib/assets/cardify-logo.png',
+            fit: BoxFit.fitHeight,
+          ),
+        ),
+        backgroundColor: const Color(0xFF204365),
       ),
       body: DeckScreen(decks: getMockDecks()),
-      backgroundColor: const Color(0xFF070706),
+      // backgroundColor: const Color(0xFF070706),
     );
   }
 }

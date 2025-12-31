@@ -28,34 +28,40 @@ class DeckCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
         ),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              name,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            name,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+            decoration: BoxDecoration(
+              color: Colors.grey[700],
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Text(
+              category.name,
               style: const TextStyle(
                 color: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
+                fontSize: 12,
               ),
             ),
-            const SizedBox(height: 8),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-              decoration: BoxDecoration(
-                color: Colors.grey[700],
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Text(
-                category.name,
-                style: const TextStyle(color: Colors.white, fontSize: 12),
-              ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            '$cardCount Cards',
+            style: TextStyle(
+              color: Colors.grey[400],
+              fontSize: 14,
             ),
-            const SizedBox(height: 8),
-            Text(
-              '$cardCount Cards',
-              style: TextStyle(color: Colors.grey[400], fontSize: 14),
-            ),
-          ],
+          ),
+        ],
         ),
       ),
     );
