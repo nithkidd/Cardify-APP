@@ -1,4 +1,5 @@
 import 'package:flashcard/models/deck.dart';
+import 'package:flashcard/ui/screens/card_screen.dart';
 import 'package:flashcard/ui/widgets/add_button.dart';
 import 'package:flashcard/ui/widgets/deck_card.dart';
 import 'package:flashcard/ui/widgets/deck_form.dart';
@@ -13,7 +14,6 @@ class DeckScreen extends StatefulWidget {
 }
 
 class _DeckScreenState extends State<DeckScreen> {
-
   void onCreate(BuildContext context) async {
     Deck? newDeck = await showModalBottomSheet<Deck>(
       isScrollControlled: true,
@@ -45,6 +45,14 @@ class _DeckScreenState extends State<DeckScreen> {
                     name: deck.name,
                     category: deck.category,
                     cardCount: deck.cards.length,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CardScreen(deck: deck),
+                        ),
+                      );
+                    },
                   ),
                 );
               },

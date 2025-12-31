@@ -10,7 +10,7 @@ class DeckForm extends StatefulWidget {
 
 class _DeckFormState extends State<DeckForm> {
   final _nameController = TextEditingController();
-  DeckCategory _selectedCategory = DeckCategory.GENERAL;
+  DeckCategory _selectedCategory = DeckCategory.general;
 
   @override
   void dispose() {

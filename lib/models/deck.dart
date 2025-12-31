@@ -2,7 +2,7 @@ import 'package:uuid/uuid.dart';
 
 var uuid = Uuid().v4();
 
-enum DeckCategory { SCIENCE, HISTORY, MATH, GEOGRAPHY, GENERAL }
+enum DeckCategory { science, history, math, geography, general }
 
 class Deck {
   String deckId;
@@ -18,11 +18,11 @@ class Deck {
     this.timesReviewed,
     this.lastReviewed,
     this.category,
-  ) : this.deckId = deckId ?? uuid;
+  ) : deckId = deckId ?? uuid;
 }
 
 
-enum DifficultyLevel { EASY, MEDIUM, HARD }
+enum DifficultyLevel { easy, medium, hard }
 
 class Card {
   String cardId;
@@ -48,8 +48,8 @@ class Card {
 
 
 enum SessionType {
-  PRACTICE,
-  SPECIAL
+  practice,
+  special
 }
 
 class PracticeSession {
