@@ -1,8 +1,8 @@
 import 'package:flashcard/models/deck.dart';
 import 'package:flashcard/ui/screens/flashcard_screen.dart';
 import 'package:flashcard/ui/widgets/add_button.dart';
-import 'package:flashcard/ui/widgets/deck_form.dart';
-import 'package:flashcard/ui/widgets/deck_item.dart';
+import 'package:flashcard/ui/widgets/deck/deck_form.dart';
+import 'package:flashcard/ui/widgets/deck/deck_item.dart';
 import 'package:flutter/material.dart';
 
 class DeckScreen extends StatefulWidget {

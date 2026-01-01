@@ -1,7 +1,7 @@
 import 'package:flashcard/models/deck.dart';
 import 'package:flashcard/ui/widgets/add_button.dart';
-import 'package:flashcard/ui/widgets/flashcard_form.dart';
-import 'package:flashcard/ui/widgets/flashcard_item.dart';
+import 'package:flashcard/ui/widgets/flashcard/flashcard_form.dart';
+import 'package:flashcard/ui/widgets/flashcard/flashcard_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flashcard/models/flashcard.dart';
 
