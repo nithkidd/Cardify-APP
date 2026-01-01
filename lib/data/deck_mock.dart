@@ -1,3 +1,4 @@
+import 'package:flashcard/models/flashcard.dart';
 import 'package:flashcard/models/deck.dart';
 
 List<Deck> getMockDecks() {
@@ -8,12 +9,33 @@ List<Deck> getMockDecks() {
     '2025-12-28',
     DeckCategory.general,
   );
-  spanishDeck.cards = [
-    Card(null, '1', 'Hello', 'Hola', 0, 0, 0, DifficultyLevel.easy),
-    Card(null, '1', 'Goodbye', 'Adiós', 0, 0, 0, DifficultyLevel.easy),
-    Card(null, '1', 'Thank you', 'Gracias', 0, 0, 0, DifficultyLevel.easy),
-    Card(null, '1', 'Please', 'Por favor', 0, 0, 0, DifficultyLevel.medium),
-    Card(
+  spanishDeck.flashcards = [
+    Flashcard(null, '1', 'Hello', 'Hola', 0, 0, 0, DifficultyLevel.easy),
+    Flashcard(null, '1', 'Goodbye', 'Adiós', 0, 0, 0, DifficultyLevel.easy),
+    Flashcard(null, '1', 'Thank you', 'Gracias', 0, 0, 0, DifficultyLevel.easy),
+    Flashcard(
+      null,
+      '1',
+      'Please',
+      'Por favor',
+      0,
+      0,
+      0,
+      DifficultyLevel.medium,
+    ),
+    Flashcard(null, '1', 'Goodbye', 'Adiós', 0, 0, 0, DifficultyLevel.easy),
+    Flashcard(null, '1', 'Thank you', 'Gracias', 0, 0, 0, DifficultyLevel.easy),
+    Flashcard(
+      null,
+      '1',
+      'Please',
+      'Por favor',
+      0,
+      0,
+      0,
+      DifficultyLevel.medium,
+    ),
+    Flashcard(
       null,
       '1',
       'Good morning',
@@ -27,8 +49,8 @@ List<Deck> getMockDecks() {
 
   // Create Math Formulas deck with cards
   var mathDeck = Deck('2', 'Math Formulas', 3, '2025-12-27', DeckCategory.math);
-  mathDeck.cards = [
-    Card(
+  mathDeck.flashcards = [
+    Flashcard(
       null,
       '2',
       'Pythagorean theorem',
@@ -38,7 +60,7 @@ List<Deck> getMockDecks() {
       0,
       DifficultyLevel.medium,
     ),
-    Card(
+    Flashcard(
       null,
       '2',
       'Area of a circle',
@@ -48,7 +70,7 @@ List<Deck> getMockDecks() {
       0,
       DifficultyLevel.easy,
     ),
-    Card(
+    Flashcard(
       null,
       '2',
       'Quadratic formula',
@@ -68,8 +90,8 @@ List<Deck> getMockDecks() {
     '2025-12-26',
     DeckCategory.history,
   );
-  historyDeck.cards = [
-    Card(
+  historyDeck.flashcards = [
+    Flashcard(
       null,
       '3',
       'When did World War II end?',
@@ -79,7 +101,7 @@ List<Deck> getMockDecks() {
       0,
       DifficultyLevel.easy,
     ),
-    Card(
+    Flashcard(
       null,
       '3',
       'Who was the first president of the United States?',
@@ -89,7 +111,7 @@ List<Deck> getMockDecks() {
       0,
       DifficultyLevel.easy,
     ),
-    Card(
+    Flashcard(
       null,
       '3',
       'What year did the French Revolution begin?',
@@ -99,7 +121,7 @@ List<Deck> getMockDecks() {
       0,
       DifficultyLevel.medium,
     ),
-    Card(
+    Flashcard(
       null,
       '3',
       'Who discovered America?',
@@ -109,7 +131,7 @@ List<Deck> getMockDecks() {
       0,
       DifficultyLevel.easy,
     ),
-    Card(
+    Flashcard(
       null,
       '3',
       'What was the capital of the Roman Empire?',

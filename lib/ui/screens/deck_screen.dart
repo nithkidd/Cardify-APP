@@ -1,8 +1,8 @@
 import 'package:flashcard/models/deck.dart';
-import 'package:flashcard/ui/screens/card_screen.dart';
+import 'package:flashcard/ui/screens/flashcard_screen.dart';
 import 'package:flashcard/ui/widgets/add_button.dart';
-import 'package:flashcard/ui/widgets/deck_card.dart';
 import 'package:flashcard/ui/widgets/deck_form.dart';
+import 'package:flashcard/ui/widgets/deck_item.dart';
 import 'package:flutter/material.dart';
 
 class DeckScreen extends StatefulWidget {
@@ -16,7 +16,7 @@ class DeckScreen extends StatefulWidget {
 class _DeckScreenState extends State<DeckScreen> {
   void onCreate(BuildContext context) async {
     Deck? newDeck = await showModalBottomSheet<Deck>(
-      isScrollControlled: true,
+      isScrollControlled: false,
       context: context,
       builder: (c) => DeckForm(),
     );
@@ -41,17 +41,18 @@ class _DeckScreenState extends State<DeckScreen> {
                 final deck = widget.decks[index];
                 return Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: DeckCard(
+                  child: DeckItem(
                     name: deck.name,
                     category: deck.category,
-                    cardCount: deck.cards.length,
-                    onTap: () {
-                      Navigator.push(
+                    cardCount: deck.flashcards.length,
+                    onTap: () async {
+                      await Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => CardScreen(deck: deck),
+                          builder: (context) => FlashcardScreen(deck: deck),
                         ),
                       );
+                      setState(() {});
                     },
                   ),
                 );
@@ -62,7 +63,7 @@ class _DeckScreenState extends State<DeckScreen> {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Center(
-            child: AddButton("Create a deck", onTap: () => onCreate(context)),
+            child: AddButton("Create a Deck", onTap: () => onCreate(context)),
           ),
         ),
       ],

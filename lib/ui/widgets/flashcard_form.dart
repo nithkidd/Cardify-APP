@@ -1,32 +1,35 @@
-import 'package:flashcard/models/deck.dart';
+import 'package:flashcard/models/flashcard.dart';
 import 'package:flutter/material.dart';
 
-class DeckForm extends StatefulWidget {
-  const DeckForm({super.key});
+class FlashcardForm extends StatefulWidget {
+  const FlashcardForm({super.key, this.deckId});
+  final String? deckId;
 
   @override
-  State<DeckForm> createState() => _DeckFormState();
+  State<FlashcardForm> createState() => _FlashcardFormState();
 }
 
-class _DeckFormState extends State<DeckForm> {
-  final _nameController = TextEditingController();
-  DeckCategory _selectedCategory = DeckCategory.general;
+class _FlashcardFormState extends State<FlashcardForm> {
+  final frontText = TextEditingController();
+  final backText = TextEditingController();
 
   @override
   void dispose() {
-    _nameController.dispose();
+    frontText.dispose();
+    backText.dispose();
     super.dispose();
   }
 
   void _onCreate() {
-    final name = _nameController.text;
+    final front = frontText.text;
+    final back = backText.text;
 
-    if (name.isEmpty) {
+    if (front.isEmpty || back.isEmpty) {
       showDialog(
         context: context,
         builder: (BuildContext context) => AlertDialog(
           title: const Text('Invalid Input'),
-          content: const Text('Please enter a deck name.'),
+          content: const Text('Please enter flashcard information.'),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
@@ -38,15 +41,18 @@ class _DeckFormState extends State<DeckForm> {
       return;
     }
 
-    final newDeck = Deck(
+    final newFlashcard = Flashcard(
       null,
-      name,
+      widget.deckId!,
+      front,
+      back,
       0,
-      null,
-      _selectedCategory,
+      0,
+      0,
+      DifficultyLevel.easy,
     );
 
-    Navigator.pop<Deck>(context, newDeck);
+    Navigator.pop<Flashcard>(context, newFlashcard);
   }
 
   @override
@@ -62,7 +68,7 @@ class _DeckFormState extends State<DeckForm> {
         children: [
           const Center(
             child: Text(
-              'Create Deck',
+              'Create Flashcard',
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
@@ -72,7 +78,7 @@ class _DeckFormState extends State<DeckForm> {
           ),
           const SizedBox(height: 24),
           Text(
-            'Deck Information',
+            'Flashcard Information',
             style: TextStyle(
               fontSize: 14,
               color: Colors.grey[400],
@@ -80,10 +86,10 @@ class _DeckFormState extends State<DeckForm> {
           ),
           const SizedBox(height: 12),
           TextField(
-            controller: _nameController,
+            controller: frontText,
             style: const TextStyle(color: Colors.white),
             decoration: InputDecoration(
-              hintText: 'Name',
+              hintText: 'Front Text',
               hintStyle: TextStyle(color: Colors.grey[600]),
               enabledBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.grey[700]!),
@@ -94,32 +100,19 @@ class _DeckFormState extends State<DeckForm> {
             ),
           ),
           const SizedBox(height: 24),
-          Text(
-            'Categories',
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.grey[400],
-            ),
-          ),
-          const SizedBox(height: 12),
-          DropdownButtonFormField<DeckCategory>(
-            initialValue: _selectedCategory,
-            dropdownColor: Colors.grey[800],
+           TextField(
+            controller: backText,
             style: const TextStyle(color: Colors.white),
-          
-            items: DeckCategory.values.map((category) {
-              return DropdownMenuItem(
-                value: category,
-                child: Text(category.name),
-              );
-            }).toList(),
-            onChanged: (value) {
-              if (value != null) {
-                setState(() {
-                  _selectedCategory = value;
-                });
-              }
-            },
+            decoration: InputDecoration(
+              hintText: 'Back Text',
+              hintStyle: TextStyle(color: Colors.grey[600]),
+              enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.grey[700]!),
+              ),
+              focusedBorder: const UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.white),
+              ),
+            ),
           ),
           const Spacer(),
           Row(

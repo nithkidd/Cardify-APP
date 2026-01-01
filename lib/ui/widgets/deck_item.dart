@@ -1,18 +1,16 @@
 import 'package:flashcard/models/deck.dart';
 import 'package:flutter/material.dart';
 
-class DeckCard extends StatelessWidget {
-  const DeckCard({
+class DeckItem extends StatelessWidget {
+  const DeckItem({
     super.key,
     required this.name,
     required this.category,
     required this.cardCount,
-    this.description,
     this.onTap,
   });
 
   final String name;
-  final String? description;
   final DeckCategory category;
   final int cardCount;
   final VoidCallback? onTap;
@@ -61,6 +59,7 @@ class DeckCard extends StatelessWidget {
               fontSize: 14,
             ),
           ),
+          const SizedBox(height: 8),
         ],
         ),
       ),
