@@ -68,7 +68,7 @@ class _FlashcardFormState extends State<FlashcardForm> {
         children: [
           const Center(
             child: Text(
-              'Create Flashcard',
+              'Create a Flashcard',
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,

@@ -1,6 +1,4 @@
-import 'package:uuid/uuid.dart';
-
-var uuid = Uuid().v4();
+import 'package:flashcard/models/deck.dart';
 
 enum DifficultyLevel { easy, medium, hard }
 

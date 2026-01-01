@@ -15,13 +15,12 @@ class FlashcardScreen extends StatefulWidget {
 }
 
 class _FlashcardScreenState extends State<FlashcardScreen> {
-
+  
   void onCreateFlashcard(BuildContext context) async {
-    
     Flashcard? newFlashcard = await showModalBottomSheet<Flashcard>(
       isScrollControlled: false,
       context: context,
-      builder: (c) => FlashcardForm(deckId: widget.deck.deckId), 
+      builder: (c) => FlashcardForm(deckId: widget.deck.deckId),
     );
     if (newFlashcard != null) {
       setState(() {
@@ -64,13 +63,15 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Center(
-              child: AddButton("Create a Flashcard", onTap: () => onCreateFlashcard(context)),
+              child: AddButton(
+                "Create a Flashcard",
+                onTap: () => onCreateFlashcard(context), icon: Icons.add,
+              ),
             ),
           ),
+         
         ],
       ),
     );
   }
 }
-
-

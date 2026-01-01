@@ -14,6 +14,7 @@ class DeckScreen extends StatefulWidget {
 }
 
 class _DeckScreenState extends State<DeckScreen> {
+  
   void onCreate(BuildContext context) async {
     Deck? newDeck = await showModalBottomSheet<Deck>(
       isScrollControlled: false,
@@ -26,6 +27,7 @@ class _DeckScreenState extends State<DeckScreen> {
       });
     }
   }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -42,9 +44,7 @@ class _DeckScreenState extends State<DeckScreen> {
                 return Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
                   child: DeckItem(
-                    name: deck.name,
-                    category: deck.category,
-                    cardCount: deck.flashcards.length,
+                    deck: deck,
                     onTap: () async {
                       await Navigator.push(
                         context,
@@ -54,6 +54,7 @@ class _DeckScreenState extends State<DeckScreen> {
                       );
                       setState(() {});
                     },
+
                   ),
                 );
               },
@@ -63,7 +64,7 @@ class _DeckScreenState extends State<DeckScreen> {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Center(
-            child: AddButton("Create a Deck", onTap: () => onCreate(context)),
+            child: AddButton("Create a Deck", onTap: () => onCreate(context), icon: Icons.add,),
           ),
         ),
       ],

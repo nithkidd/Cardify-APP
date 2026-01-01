@@ -62,7 +62,7 @@ class _DeckFormState extends State<DeckForm> {
         children: [
           const Center(
             child: Text(
-              'Create Deck',
+              'Create a Deck',
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
