@@ -7,7 +7,6 @@ import 'package:flashcard/models/flashcard.dart';
 
 class FlashcardScreen extends StatefulWidget {
   const FlashcardScreen({super.key, required this.deck});
-
   final Deck deck;
 
   @override

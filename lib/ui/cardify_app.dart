@@ -1,4 +1,3 @@
-import 'package:flashcard/data/deck_mock.dart';
 import 'package:flashcard/ui/screens/deck_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -18,7 +17,7 @@ class CardifyApp extends StatelessWidget {
         ),
         backgroundColor: const Color(0xFF204365),
       ),
-      body: DeckScreen(decks: getMockDecks()),
+      body: DeckScreen(),
       // backgroundColor: const Color(0xFF070706),
     );
   }

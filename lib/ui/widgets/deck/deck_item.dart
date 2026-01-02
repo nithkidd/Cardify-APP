@@ -65,7 +65,7 @@ class DeckItem extends StatelessWidget {
               style: TextStyle(color: Colors.grey[400], fontSize: 14),
             ),
             if (deck.flashcards.isNotEmpty) ...[
-              const SizedBox(height: 12),
+              const SizedBox(height: 8),
               Row(
                 children: [
                   SessionButton(
@@ -76,6 +76,7 @@ class DeckItem extends StatelessWidget {
                   SessionButton(
                     "Special Session",
                     onTap: () => startSession(context, SessionType.special),
+                    tooltipMessage: "This stage the harder card will appear more",
                   ),
                 ],
               ),

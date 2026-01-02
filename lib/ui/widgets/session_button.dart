@@ -5,14 +5,16 @@ class SessionButton extends StatelessWidget {
     this.label, {
     super.key,
     required this.onTap,
+    this.tooltipMessage,
   });
 
   final String label;
   final VoidCallback onTap;
+  final String? tooltipMessage;
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    Widget button = GestureDetector(
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
@@ -32,10 +34,39 @@ class SessionButton extends StatelessWidget {
                 fontWeight: FontWeight.w500,
               ),
             ),
-           
+            if (tooltipMessage != null) ...[
+              const SizedBox(width: 6),
+              Container(
+                padding: const EdgeInsets.all(2),
+                decoration: const BoxDecoration(
+                  color: Colors.orange,
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  Icons.info_outline,
+                  color: Colors.white,
+                  size: 12,
+                ),
+              ),
+            ],
           ],
         ),
       ),
     );
+
+    // Only wrap with Tooltip if message is provided
+    if (tooltipMessage != null) {
+      return Tooltip(
+        message: tooltipMessage!,
+        textStyle: const TextStyle(color: Colors.white, fontSize: 12),
+        decoration: BoxDecoration(
+          color: Colors.grey[800],
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: button,
+      );
+    }
+
+    return button;
   }
 }
