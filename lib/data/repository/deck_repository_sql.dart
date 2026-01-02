@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:flashcard/data/database/database_service.dart';
 import 'package:flashcard/models/deck.dart';
 import 'package:flashcard/models/flashcard.dart';
@@ -6,26 +5,14 @@ import 'package:flashcard/models/flashcard.dart';
 class DeckRepositorySql {
   final DatabaseService _dbService = DatabaseService();
 
-  // Stream controller for real-time updates
-  final _decksController = StreamController<List<Deck>>.broadcast();
-  Stream<List<Deck>> get decksStream => _decksController.stream;
-
-  // ============ NOTIFY LISTENERS ============
-  Future<void> _notifyListeners() async {
-    final decks = await loadAll();
-    _decksController.add(decks);
-  }
-
   // ============ LOAD ALL DECKS ============
   Future<List<Deck>> loadAll() async {
     final db = await _dbService.database;
 
-    // Get all decks
     final deckMaps = await db.query('decks', orderBy: 'createdAt DESC');
 
     List<Deck> decks = [];
     for (var deckMap in deckMaps) {
-      // Get flashcards for each deck
       final flashcardMaps = await db.query(
         'flashcards',
         where: 'deckId = ?',
@@ -63,79 +50,68 @@ class DeckRepositorySql {
     return deck;
   }
 
-  // ============ ADD DECK ============
-  Future<void> addDeck(Deck deck) async {
+  // ============ LOAD FLASHCARDS BY DECK ============
+  Future<List<Flashcard>> loadFlashcards(String deckId) async {
     final db = await _dbService.database;
-
-    await db.insert('decks', _deckToMap(deck));
-
-    // Insert flashcards if any
-    for (var flashcard in deck.flashcards) {
-      await db.insert('flashcards', _flashcardToMap(flashcard));
-    }
-
-    await _notifyListeners();
+    final flashcardMaps = await db.query(
+      'flashcards',
+      where: 'deckId = ?',
+      whereArgs: [deckId],
+    );
+    return flashcardMaps.map((f) => _flashcardFromMap(f)).toList();
   }
+
+  // ============ ADD DECK ============
+  Future<void> addDeck(List<Deck> decks, Deck deck) async {
+  final db = await _dbService.database;
+  await db.insert('decks', _deckToMap(deck));  // Save to database
+  decks.add(deck);  // Add to YOUR list (passed by reference)
+}
 
   // ============ UPDATE DECK ============
   Future<void> updateDeck(Deck deck) async {
     final db = await _dbService.database;
-
     await db.update(
       'decks',
       _deckToMap(deck),
       where: 'deckId = ?',
       whereArgs: [deck.deckId],
     );
-
-    await _notifyListeners();
   }
 
   // ============ DELETE DECK ============
   Future<void> deleteDeck(String deckId) async {
     final db = await _dbService.database;
-
-    // Delete flashcards first (or use CASCADE)
     await db.delete('flashcards', where: 'deckId = ?', whereArgs: [deckId]);
     await db.delete('decks', where: 'deckId = ?', whereArgs: [deckId]);
-
-    await _notifyListeners();
   }
 
   // ============ ADD FLASHCARD ============
-  Future<void> addFlashcard(Flashcard flashcard) async {
+  Future<void> addFlashcard(List<Flashcard> flashcards, Flashcard flashcard) async {
     final db = await _dbService.database;
-
     await db.insert('flashcards', _flashcardToMap(flashcard));
-
-    await _notifyListeners();
+    flashcards.add(flashcard);
   }
 
   // ============ UPDATE FLASHCARD ============
   Future<void> updateFlashcard(Flashcard flashcard) async {
     final db = await _dbService.database;
-
     await db.update(
       'flashcards',
       _flashcardToMap(flashcard),
       where: 'flashcardId = ?',
       whereArgs: [flashcard.flashcardId],
     );
-
-    await _notifyListeners();
   }
 
   // ============ DELETE FLASHCARD ============
   Future<void> deleteFlashcard(String flashcardId) async {
     final db = await _dbService.database;
-
     await db.delete(
       'flashcards',
       where: 'flashcardId = ?',
       whereArgs: [flashcardId],
     );
-
-    await _notifyListeners();
   }
 
   // ============ BATCH INSERT (for initial data) ============
@@ -150,18 +126,13 @@ class DeckRepositorySql {
         }
       }
     });
-
-    await _notifyListeners();
   }
 
   // ============ CLEAR ALL DATA ============
   Future<void> clearAll() async {
     final db = await _dbService.database;
-
     await db.delete('flashcards');
     await db.delete('decks');
-
-    await _notifyListeners();
   }
 
   // ============ CONVERTERS ============
@@ -215,10 +186,5 @@ class DeckRepositorySql {
         orElse: () => DifficultyLevel.easy,
       ),
     );
-  }
-
-  // ============ DISPOSE ============
-  void dispose() {
-    _decksController.close();
   }
 }

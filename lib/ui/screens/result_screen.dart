@@ -2,6 +2,7 @@
 import 'package:flashcard/models/deck.dart';
 import 'package:flashcard/models/practice_session.dart';
 import 'package:flashcard/ui/screens/practice_session_screen.dart';
+import 'package:flashcard/ui/widgets/add_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flashcard/ui/widgets/session_button.dart';
 import 'package:flashcard/ui/widgets/practice/result_item.dart';
@@ -96,7 +97,7 @@ class ResultScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Expanded(
-                        child: PrimarySessionButton(
+                        child: SessionButton(
                           "Repeat Deck",
                           onTap: () {
                             Navigator.pushReplacement(
@@ -113,8 +114,9 @@ class ResultScreen extends StatelessWidget {
                       ),
                       const SizedBox(width: 12),
                       Expanded(
-                        child: PrimarySessionButton(
+                        child: SessionButton(
                           "Special Review",
+                          tooltipMessage: "Harder cards will appear more often",
                           onTap: () {
                             Navigator.pushReplacement(
                               context,
@@ -133,8 +135,9 @@ class ResultScreen extends StatelessWidget {
                   const SizedBox(height: 12),
                   SizedBox(
                     width: double.infinity,
-                    child: SecondarySessionButton(
+                    child: AddButton(
                       "Return to Decks",
+                      color: Color(0xFF00B2FF),
                       onTap: () {
                         Navigator.popUntil(context, (route) => route.isFirst);
                       },
@@ -149,5 +152,4 @@ class ResultScreen extends StatelessWidget {
       ),
     );
   }
-
 }

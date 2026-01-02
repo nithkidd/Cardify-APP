@@ -12,7 +12,7 @@ class FlashcardScreen extends StatefulWidget {
     required this.deck,
     required this.repository,
   });
-  
+
   final Deck deck;
   final DeckRepositorySql repository;
 
@@ -28,11 +28,11 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
       builder: (c) => FlashcardForm(deckId: widget.deck.deckId),
     );
     if (newFlashcard != null) {
-      // Save to database
-      await widget.repository.addFlashcard(newFlashcard);
-      setState(() {
-        widget.deck.flashcards.add(newFlashcard);
-      });
+      await widget.repository.addFlashcard(
+        widget.deck.flashcards,
+        newFlashcard,
+      );
+      setState(() {});
     }
   }
 

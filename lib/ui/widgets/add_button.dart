@@ -4,8 +4,15 @@ class AddButton extends StatelessWidget {
   final String label;
   final void Function() onTap;
   final IconData? icon;
-
-  const AddButton(this.label, {super.key, required this.onTap, this.icon});
+  final Color? color;
+  
+  const AddButton(
+    this.label, {
+    super.key,
+    required this.onTap,
+    this.icon,
+    this.color,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +20,7 @@ class AddButton extends StatelessWidget {
       onPressed: onTap,
 
       style: TextButton.styleFrom(
-        backgroundColor: Colors.grey[800],
+        backgroundColor: color ?? Colors.grey[800],
         padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 24),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       ),

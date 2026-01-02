@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 
 class DeckScreen extends StatefulWidget {
   const DeckScreen({super.key});
-  
 
   @override
   State<DeckScreen> createState() => _DeckScreenState();
@@ -23,12 +22,6 @@ class _DeckScreenState extends State<DeckScreen> {
   void initState() {
     super.initState();
     _loadDecks();
-    // Listen to real-time updates
-    repository.decksStream.listen((updatedDecks) {
-      setState(() {
-        decks = updatedDecks;
-      });
-    });
   }
 
   Future<void> _loadDecks() async {
@@ -45,9 +38,10 @@ class _DeckScreenState extends State<DeckScreen> {
       context: context,
       builder: (c) => DeckForm(),
     );
+
     if (newDeck != null) {
-      await repository.addDeck(newDeck);
-      // No need for setState - stream will update automatically!
+      await repository.addDeck(decks, newDeck);
+      setState(() {});
     }
   }
 
@@ -83,6 +77,7 @@ class _DeckScreenState extends State<DeckScreen> {
                           ),
                         ),
                       );
+                      setState(() {});
                     },
                   ),
                 );

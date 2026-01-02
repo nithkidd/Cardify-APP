@@ -1,5 +1,3 @@
-
-
 import 'package:flashcard/models/flashcard.dart';
 import 'package:flutter/material.dart';
 
