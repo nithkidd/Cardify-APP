@@ -1,5 +1,6 @@
 import 'package:flashcard/models/deck.dart';
 import 'package:flashcard/models/practice_session.dart';
+import 'package:flashcard/ui/screens/result_screen.dart';
 import 'package:flashcard/ui/widgets/practice/practice_item.dart';
 import 'package:flutter/material.dart';
 
@@ -20,24 +21,83 @@ class PracticeSessionScreen extends StatefulWidget {
 class _PracticeSessionScreenState extends State<PracticeSessionScreen> {
   int _currentIndex = 0;
   bool _showAnswer = false;
+  int _knowCount = 0;
+  int _dontKnowCount = 0;
 
-  void _dontKnowButton() {
-    if (_currentIndex < widget.deck.flashcards.length - 1) {
-      setState(() {
-        _currentIndex++;
-        _showAnswer = false;
-      });
-    }
+  // void _dontKnowButton() {
+  //   if (_currentIndex < widget.deck.flashcards.length - 1) {
+  //     setState(() {
+  //       _currentIndex++;
+  //       _showAnswer = false;
+  //     });
+  //   } else {
+  //   Navigator.pushReplacement(
+  //       context,
+  //       MaterialPageRoute(
+  //         builder: (context) => ResultScreen(
+  //           deckName: widget.deck.name,
+  //           totalCards: widget.deck.flashcards.length,
+  //           knowCount: _knowCount,
+  //           dontKnowCount: _dontKnowCount,
+  //         ),
+  //       ),
+  //     );
+  // }
+  // _dontKnowCount++;
+  // }
+
+  // void _knowButton() {
+  //   if (_currentIndex < widget.deck.flashcards.length - 1) {
+  //     setState(() {
+  //       _currentIndex++;
+  //       _showAnswer = false;
+  //     });
+  //   } else {
+  //   Navigator.pushReplacement(
+  //       context,
+  //       MaterialPageRoute(
+  //         builder: (context) => ResultScreen(
+  //           deckName: widget.deck.name,
+  //           totalCards: widget.deck.flashcards.length,
+  //           knowCount: _knowCount,
+  //           dontKnowCount: _dontKnowCount,
+  //         ),
+  //       ),
+  //     );
+  // }
+  // _knowCount++;
+  // }
+
+  //new function to handle both buttons
+
+  void _handleAnswer(bool isKnown) {
+
+  if (isKnown) {
+    _knowCount++;
+  } else {
+    _dontKnowCount++;
   }
 
-  void _knowButton() {
-    if (_currentIndex < widget.deck.flashcards.length - 1) {
-      setState(() {
-        _currentIndex++;
-        _showAnswer = false;
-      });
-    }
+  if (_currentIndex < widget.deck.flashcards.length - 1) {
+    setState(() {
+      _currentIndex++;
+      _showAnswer = false;
+    });
+  } else {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ResultScreen(
+          deck: widget.deck,
+          deckName: widget.deck.name,
+          totalCards: widget.deck.flashcards.length,
+          knowCount: _knowCount,
+          dontKnowCount: _dontKnowCount,
+        ),
+      ),
+    );
   }
+}
 
   void _flipCard() {
     setState(() {
@@ -102,9 +162,7 @@ class _PracticeSessionScreenState extends State<PracticeSessionScreen> {
               children: [
                 //dont know
                 ElevatedButton.icon(
-                  onPressed: _currentIndex < widget.deck.flashcards.length - 1
-                      ? _dontKnowButton
-                      : null,
+                  onPressed: () => _handleAnswer(false),
                   label: const Text("I don't Know"),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFFAF0C0C),
@@ -119,9 +177,7 @@ class _PracticeSessionScreenState extends State<PracticeSessionScreen> {
                   SizedBox(width: 24,),
                 //know
                 ElevatedButton.icon(
-                  onPressed: _currentIndex < widget.deck.flashcards.length - 1
-                      ? _knowButton
-                      : null,
+                  onPressed: () => _handleAnswer(true),
                   label: const Text("I Know"),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF51A124),

@@ -1,10 +1,153 @@
+// import 'package:flashcard/ui/screens/practice_session_screen.dart';
+import 'package:flashcard/models/deck.dart';
+import 'package:flashcard/models/practice_session.dart';
+import 'package:flashcard/ui/screens/practice_session_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flashcard/ui/widgets/session_button.dart';
+import 'package:flashcard/ui/widgets/practice/result_item.dart';
 
+// import 'package:flashcard/models/deck.dart';
+// import 'package:flashcard/models/practice_session.dart';
 class ResultScreen extends StatelessWidget {
-  const ResultScreen({super.key});
+  final String deckName;
+  final int totalCards;
+  final int knowCount;
+  final int dontKnowCount;
+  final Deck deck;
+
+  const ResultScreen({
+    super.key,
+    required this.deckName,
+    required this.totalCards,
+    required this.knowCount,
+    required this.dontKnowCount,
+    required this.deck,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    final percentage = (knowCount / totalCards * 100).toStringAsFixed(1);
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          'Practice Results',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: const Color(0xFF070706),
+        iconTheme: const IconThemeData(color: Colors.white),
+      ),
+      backgroundColor: const Color(0xFF070706),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const SizedBox(height: 20),
+              const Icon(
+                Icons.check_circle_outline,
+                size: 80,
+                color: Color(0xFF00B2FF),
+              ),
+              const SizedBox(height: 24),
+              const Text(
+                'Practice Complete!',
+                style: TextStyle(color: Colors.white, fontSize: 28),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                "Summary for deck: $deckName",
+                style: const TextStyle(color: Colors.white70, fontSize: 18),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 40),
+              const Text(
+                "You've mastered",
+                style: TextStyle(color: Colors.white70, fontSize: 16),
+              ),
+              Text(
+                '$percentage%',
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 48,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 24),
+              Column(
+                children: [
+                  ResultStatCard(
+                    label: "Memorized",
+                    count: knowCount,
+                    color: const Color(0xFF5CFF00),
+                  ),
+                  ResultStatCard(
+                    label: "Unknown",
+                    count: dontKnowCount,
+                    color: const Color(0xFFFF0000),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 40),
+              Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: PrimarySessionButton(
+                          "Repeat Deck",
+                          onTap: () {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => PracticeSessionScreen(
+                                  deck: deck,
+                                  sessionType: SessionType.practice,
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: PrimarySessionButton(
+                          "Special Review",
+                          onTap: () {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => PracticeSessionScreen(
+                                  deck: deck,
+                                  sessionType: SessionType.special,
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  SizedBox(
+                    width: double.infinity,
+                    child: SecondarySessionButton(
+                      "Return to Decks",
+                      onTap: () {
+                        Navigator.popUntil(context, (route) => route.isFirst);
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+            ],
+          ),
+        ),
+      ),
+    );
   }
+
 }
