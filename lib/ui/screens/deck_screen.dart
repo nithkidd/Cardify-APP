@@ -1,4 +1,4 @@
-import 'package:flashcard/data/repository/deck_repository.dart';
+import 'package:flashcard/data/repository/deck_repository_sql.dart';
 import 'package:flashcard/models/deck.dart';
 import 'package:flashcard/ui/screens/flashcard_screen.dart';
 import 'package:flashcard/ui/widgets/add_button.dart';
@@ -8,13 +8,14 @@ import 'package:flutter/material.dart';
 
 class DeckScreen extends StatefulWidget {
   const DeckScreen({super.key});
+  
 
   @override
   State<DeckScreen> createState() => _DeckScreenState();
 }
 
 class _DeckScreenState extends State<DeckScreen> {
-  final DeckRepository _deckRepository = DeckRepository();
+  final DeckRepositorySql repository = DeckRepositorySql();
   List<Deck> decks = [];
   bool isLoading = true;
 
@@ -22,10 +23,16 @@ class _DeckScreenState extends State<DeckScreen> {
   void initState() {
     super.initState();
     _loadDecks();
+    // Listen to real-time updates
+    repository.decksStream.listen((updatedDecks) {
+      setState(() {
+        decks = updatedDecks;
+      });
+    });
   }
 
   Future<void> _loadDecks() async {
-    final loadedDecks = await _deckRepository.loadAll();
+    final loadedDecks = await repository.loadAll();
     setState(() {
       decks = loadedDecks;
       isLoading = false;
@@ -39,8 +46,8 @@ class _DeckScreenState extends State<DeckScreen> {
       builder: (c) => DeckForm(),
     );
     if (newDeck != null) {
-      await _deckRepository.addDeck(decks, newDeck);
-      setState(() {});
+      await repository.addDeck(newDeck);
+      // No need for setState - stream will update automatically!
     }
   }
 
@@ -70,11 +77,12 @@ class _DeckScreenState extends State<DeckScreen> {
                       await Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => FlashcardScreen(deck: deck),
+                          builder: (context) => FlashcardScreen(
+                            deck: deck,
+                            repository: repository,
+                          ),
                         ),
                       );
-                      await _deckRepository.saveAll(decks); 
-                      setState(() {});
                     },
                   ),
                 );

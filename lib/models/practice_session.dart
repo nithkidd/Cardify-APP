@@ -1,4 +1,4 @@
-import 'package:flashcard/models/deck.dart';
+import 'package:uuid/uuid.dart';
 
 enum SessionType { practice, special }
 
@@ -19,5 +19,5 @@ class PracticeSession {
     this.startTime,
     this.endTime,
     this.sessionType,
-  ) : sessionId = sessionId ?? uuid;
+  ) : sessionId = sessionId ?? const Uuid().v4();
 }

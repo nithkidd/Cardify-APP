@@ -1,4 +1,4 @@
-import 'package:flashcard/models/deck.dart';
+import 'package:uuid/uuid.dart';
 
 enum DifficultyLevel { easy, medium, hard }
 
@@ -21,34 +21,5 @@ class Flashcard {
     this.correctCount,
     this.incorrectCount,
     this.difficultyLevel,
-  ) : flashcardId = flashcardId ?? uuid;
-
-  Map<String, dynamic> toJson() {
-    return {
-      'flashcardId': flashcardId,
-      'deckId': deckId,
-      'frontText': frontText,
-      'backText': backText,
-      'difficultyScore': difficultyScore,  
-      'correctCount': correctCount,
-      'incorrectCount': incorrectCount,
-      'difficultyLevel': difficultyLevel.name,  
-    };
-  }
-
-  factory Flashcard.fromJson(Map<String, dynamic> json) {
-    return Flashcard(
-      json['flashcardId'],
-      json['deckId'],
-      json['frontText'],
-      json['backText'],
-      json['difficultyScore'],  
-      json['correctCount'],
-      json['incorrectCount'],
-      DifficultyLevel.values.firstWhere(
-        (e) => e.name == json['difficultyLevel'],  
-        orElse: () => DifficultyLevel.easy,
-      ),
-    );
-  }
+  ) : flashcardId = flashcardId ?? const Uuid().v4();  
 }

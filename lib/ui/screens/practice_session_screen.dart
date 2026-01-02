@@ -48,7 +48,6 @@ class _PracticeSessionScreenState extends State<PracticeSessionScreen> {
   @override
   Widget build(BuildContext context) {
 
-    
     // if (widget.deck.flashcards.isEmpty) {
     //   return Scaffold(
     //     appBar: AppBar(

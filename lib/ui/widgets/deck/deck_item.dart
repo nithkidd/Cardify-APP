@@ -5,11 +5,7 @@ import 'package:flashcard/ui/widgets/session_button.dart';
 import 'package:flutter/material.dart';
 
 class DeckItem extends StatelessWidget {
-  const DeckItem({
-    super.key,
-    required this.deck,
-    required this.onTap,
-  });
+  const DeckItem({super.key, required this.deck, required this.onTap});
 
   final Deck deck;
   final VoidCallback? onTap;
@@ -18,10 +14,8 @@ class DeckItem extends StatelessWidget {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => PracticeSessionScreen(
-          deck: deck,
-          sessionType: sessionType,
-        ),
+        builder: (context) =>
+            PracticeSessionScreen(deck: deck, sessionType: sessionType),
       ),
     );
   }
@@ -76,7 +70,8 @@ class DeckItem extends StatelessWidget {
                   SessionButton(
                     "Special Session",
                     onTap: () => startSession(context, SessionType.special),
-                    tooltipMessage: "This stage the harder card will appear more",
+                    tooltipMessage:
+                        "This stage the harder card will appear more",
                   ),
                 ],
               ),
