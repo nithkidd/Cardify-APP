@@ -54,6 +54,17 @@ class DatabaseService {
       )
     ''');
 
+    await db.execute('''
+  CREATE TABLE practice_sessions (
+    sessionId TEXT PRIMARY KEY,
+    deckId TEXT NOT NULL,
+    sessionSize INTEGER,
+    startTime TEXT,
+    endTime TEXT,
+    sessionType TEXT
+  )
+''');
+
     // Create index for faster queries
     await db.execute(
       'CREATE INDEX idx_flashcards_deckId ON flashcards (deckId)',

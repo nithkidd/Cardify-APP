@@ -1,4 +1,8 @@
+import 'dart:math';
+import 'package:flashcard/data/repository/deck_repository_sql.dart';
+import 'package:flashcard/data/repository/practice_repository_sql.dart';
 import 'package:flashcard/models/deck.dart';
+import 'package:flashcard/models/flashcard.dart';
 import 'package:flashcard/models/practice_session.dart';
 import 'package:flashcard/ui/screens/result_screen.dart';
 import 'package:flashcard/ui/widgets/practice/practice_item.dart';
@@ -7,11 +11,12 @@ import 'package:flutter/material.dart';
 class PracticeSessionScreen extends StatefulWidget {
   final Deck deck;
   final SessionType sessionType;
-
+  final int? sessionSize;
   const PracticeSessionScreen({
     super.key,
     required this.sessionType,
     required this.deck,
+    this.sessionSize,
   });
 
   @override
@@ -19,86 +24,97 @@ class PracticeSessionScreen extends StatefulWidget {
 }
 
 class _PracticeSessionScreenState extends State<PracticeSessionScreen> {
+  final DeckRepositorySql repository = DeckRepositorySql();
+  final PracticeSessionRepositorySql practiceSessionRepo =  PracticeSessionRepositorySql();
   int _currentIndex = 0;
   bool _showAnswer = false;
   int _knowCount = 0;
   int _dontKnowCount = 0;
+  late List<Flashcard> _flashcards;
 
-  // void _dontKnowButton() {
-  //   if (_currentIndex < widget.deck.flashcards.length - 1) {
-  //     setState(() {
-  //       _currentIndex++;
-  //       _showAnswer = false;
-  //     });
-  //   } else {
-  //   Navigator.pushReplacement(
-  //       context,
-  //       MaterialPageRoute(
-  //         builder: (context) => ResultScreen(
-  //           deckName: widget.deck.name,
-  //           totalCards: widget.deck.flashcards.length,
-  //           knowCount: _knowCount,
-  //           dontKnowCount: _dontKnowCount,
-  //         ),
-  //       ),
-  //     );
-  // }
-  // _dontKnowCount++;
-  // }
+  @override
+  void initState() {
+    super.initState();
+    _flashcards = _setupCards();
+  }
 
-  // void _knowButton() {
-  //   if (_currentIndex < widget.deck.flashcards.length - 1) {
-  //     setState(() {
-  //       _currentIndex++;
-  //       _showAnswer = false;
-  //     });
-  //   } else {
-  //   Navigator.pushReplacement(
-  //       context,
-  //       MaterialPageRoute(
-  //         builder: (context) => ResultScreen(
-  //           deckName: widget.deck.name,
-  //           totalCards: widget.deck.flashcards.length,
-  //           knowCount: _knowCount,
-  //           dontKnowCount: _dontKnowCount,
-  //         ),
-  //       ),
-  //     );
-  // }
-  // _knowCount++;
-  // }
+  List<Flashcard> _setupCards() {
+    if (widget.sessionType != SessionType.special) {
+      return List.from(widget.deck.flashcards);
+    }
+
+    return _pickCards();
+  }
+
+  List<Flashcard> _pickCards() {
+    List<Flashcard> pool = [];
+
+    for (var card in widget.deck.flashcards) {
+      card.updateDifficultyLevel();
+      for (int i = 0; i < card.difficultyLevel.times; i++) {
+        pool.add(card);
+      }
+    }
+
+    pool.shuffle();
+
+    final random = Random();
+    List<Flashcard> picked = [];
+
+    for (int i = 0; i < widget.sessionSize!; i++) {
+      picked.add(pool[random.nextInt(pool.length)]);
+    }
+
+    return picked;
+  }
 
   //new function to handle both buttons
+  void _handleAnswer(Flashcard flashcard, bool isKnown) async {
+    if (isKnown) {
+      _knowCount++;
+      flashcard.difficultyScore -= 1;
+      flashcard.correctCount += 1;
+    } else {
+      _dontKnowCount++;
+      flashcard.difficultyScore += 1;
+      flashcard.incorrectCount += 1;
+    }
 
-  void _handleAnswer(bool isKnown) {
+    await repository.updateFlashcard(flashcard);
 
-  if (isKnown) {
-    _knowCount++;
-  } else {
-    _dontKnowCount++;
-  }
-
-  if (_currentIndex < widget.deck.flashcards.length - 1) {
-    setState(() {
-      _currentIndex++;
-      _showAnswer = false;
-    });
-  } else {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => ResultScreen(
-          deck: widget.deck,
-          deckName: widget.deck.name,
-          totalCards: widget.deck.flashcards.length,
-          knowCount: _knowCount,
-          dontKnowCount: _dontKnowCount,
+    if (_currentIndex < _flashcards.length - 1) {
+      setState(() {
+        _currentIndex++;
+        _showAnswer = false;
+      });
+    } else {
+      // Save practice session BEFORE navigating
+      await practiceSessionRepo.addSession(
+        PracticeSession(
+          null,
+          widget.deck.deckId,
+          _flashcards.length,
+          widget.sessionType,
         ),
-      ),
-    );
-  }
-}
+      );
 
+      // Then navigate
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ResultScreen(
+            deck: widget.deck,
+            deckName: widget.deck.name,
+            totalCards: _flashcards.length,
+            knowCount: _knowCount,
+            dontKnowCount: _dontKnowCount,
+          ),
+        ),
+      );
+    }
+  }
+
+  // ...existing code...
   void _flipCard() {
     setState(() {
       _showAnswer = !_showAnswer;
@@ -107,49 +123,45 @@ class _PracticeSessionScreenState extends State<PracticeSessionScreen> {
 
   @override
   Widget build(BuildContext context) {
-
-    // if (widget.deck.flashcards.isEmpty) {
-    //   return Scaffold(
-    //     appBar: AppBar(
-    //       title: Text('Practice: ${widget.deck.name}'),
-    //       backgroundColor: const Color(0xFF070706),
-    //       iconTheme: const IconThemeData(color: Colors.white),
-    //     ),
-    //     backgroundColor: const Color(0xFF070706),
-    //     body: const Center(
-    //       child: Text(
-    //         'No flashcards to practice',
-    //         style: TextStyle(color: Colors.white70, fontSize: 18),
-    //       ),
-    //     ),
-    //   );
-    // }
-
-    final flashcard = widget.deck.flashcards[_currentIndex];
+    final flashcard = _flashcards[_currentIndex];
 
     return Scaffold(
       appBar: AppBar(
-          title: Text('Practice: ${widget.deck.name}',  
+        title: Text(
+          'Practice: ${widget.deck.name}',
           style: TextStyle(color: Colors.white),
-          ),
-          backgroundColor: const Color(0xFF070706),
-          iconTheme: const IconThemeData(color: Colors.white),
         ),
+        backgroundColor: const Color(0xFF070706),
+        iconTheme: const IconThemeData(color: Colors.white),
+      ),
       backgroundColor: const Color(0xFF070706),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              '${_currentIndex + 1} / ${widget.deck.flashcards.length} Card',
+              '${_currentIndex + 1} / ${_flashcards.length} Card',
               style: const TextStyle(
                 color: Colors.white,
                 decoration: TextDecoration.none,
               ),
             ),
+            const SizedBox(height: 8),
+            Text(
+              flashcard.difficultyLevel.name.toUpperCase(),
+              style: TextStyle(
+                color: flashcard.difficultyLevel == DifficultyLevel.easy
+                    ? Colors.green
+                    : flashcard.difficultyLevel == DifficultyLevel.medium
+                    ? Colors.orange
+                    : Colors.red,
+                fontSize: 14,
+              ),
+            ),
+
             Container(
-          margin: const EdgeInsets.all(20),
-          padding: const EdgeInsets.all(32),
+              margin: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(32),
               child: PracticeItem(
                 flashcard: flashcard,
                 showAnswer: _showAnswer,
@@ -162,7 +174,7 @@ class _PracticeSessionScreenState extends State<PracticeSessionScreen> {
               children: [
                 //dont know
                 ElevatedButton.icon(
-                  onPressed: () => _handleAnswer(false),
+                  onPressed: () => _handleAnswer(flashcard, false),
                   label: const Text("I don't Know"),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFFAF0C0C),
@@ -174,10 +186,10 @@ class _PracticeSessionScreenState extends State<PracticeSessionScreen> {
                   ),
                 ),
 
-                  SizedBox(width: 24,),
+                SizedBox(width: 24),
                 //know
                 ElevatedButton.icon(
-                  onPressed: () => _handleAnswer(true),
+                  onPressed: () => _handleAnswer(flashcard, true),
                   label: const Text("I Know"),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF51A124),

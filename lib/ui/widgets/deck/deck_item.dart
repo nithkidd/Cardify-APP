@@ -1,6 +1,7 @@
 import 'package:flashcard/models/deck.dart';
 import 'package:flashcard/models/practice_session.dart';
 import 'package:flashcard/ui/screens/practice_session_screen.dart';
+import 'package:flashcard/ui/widgets/practice/practice_form.dart';
 import 'package:flashcard/ui/widgets/session_button.dart';
 import 'package:flutter/material.dart';
 
@@ -10,7 +11,26 @@ class DeckItem extends StatelessWidget {
   final Deck deck;
   final VoidCallback? onTap;
 
-  void startSession(BuildContext context, SessionType sessionType) {
+  void startSession(BuildContext context, SessionType sessionType) async {
+    if (sessionType == SessionType.special) {
+       int? newDeckSize = await showModalBottomSheet<int>(
+        isScrollControlled: false,
+        context: context,
+        builder: (c) => PracticeForm(deckSize: deck.flashcards.length),
+      );
+      if (newDeckSize == null) return;
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => PracticeSessionScreen(
+            deck: deck,
+            sessionType: sessionType,
+            sessionSize: newDeckSize,
+          ),
+        ),
+      );
+      return;
+    }
     Navigator.push(
       context,
       MaterialPageRoute(

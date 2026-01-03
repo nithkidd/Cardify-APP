@@ -3,6 +3,7 @@ import 'package:flashcard/models/deck.dart';
 import 'package:flashcard/models/practice_session.dart';
 import 'package:flashcard/ui/screens/practice_session_screen.dart';
 import 'package:flashcard/ui/widgets/add_button.dart';
+import 'package:flashcard/ui/widgets/practice/practice_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flashcard/ui/widgets/session_button.dart';
 import 'package:flashcard/ui/widgets/practice/result_item.dart';
@@ -24,6 +25,35 @@ class ResultScreen extends StatelessWidget {
     required this.dontKnowCount,
     required this.deck,
   });
+
+  void startSession(BuildContext context, SessionType sessionType) async {
+    if (sessionType == SessionType.special) {
+      int? newDeckSize = await showModalBottomSheet<int>(
+        isScrollControlled: false,
+        context: context,
+        builder: (c) => PracticeForm(deckSize: deck.flashcards.length),
+      );
+      if (newDeckSize == null) return;
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => PracticeSessionScreen(
+            deck: deck,
+            sessionType: sessionType,
+            sessionSize: newDeckSize,
+          ),
+        ),
+      );
+      return;
+    }
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+            PracticeSessionScreen(deck: deck, sessionType: sessionType),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -99,17 +129,8 @@ class ResultScreen extends StatelessWidget {
                       Expanded(
                         child: SessionButton(
                           "Repeat Deck",
-                          onTap: () {
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => PracticeSessionScreen(
-                                  deck: deck,
-                                  sessionType: SessionType.practice,
-                                ),
-                              ),
-                            );
-                          },
+                          onTap: () =>
+                              startSession(context, SessionType.practice),
                         ),
                       ),
                       const SizedBox(width: 12),
@@ -117,17 +138,8 @@ class ResultScreen extends StatelessWidget {
                         child: SessionButton(
                           "Special Review",
                           tooltipMessage: "Harder cards will appear more often",
-                          onTap: () {
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => PracticeSessionScreen(
-                                  deck: deck,
-                                  sessionType: SessionType.special,
-                                ),
-                              ),
-                            );
-                          },
+                          onTap: () =>
+                              startSession(context, SessionType.special),
                         ),
                       ),
                     ],
