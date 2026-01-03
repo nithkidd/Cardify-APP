@@ -141,8 +141,7 @@ class DeckRepositorySql {
       'deckId': deck.deckId,
       'name': deck.name,
       'category': deck.category.name,
-      'timesReviewed': deck.timesReviewed,
-      'lastReviewed': deck.lastReviewed,
+     
     };
   }
 
@@ -150,8 +149,6 @@ class DeckRepositorySql {
     return Deck(
       map['deckId'],
       map['name'],
-      map['timesReviewed'] ?? 0,
-      map['lastReviewed'],
       DeckCategory.values.firstWhere(
         (e) => e.name == map['category'],
         orElse: () => DeckCategory.general,
@@ -166,8 +163,6 @@ class DeckRepositorySql {
       'frontText': flashcard.frontText,
       'backText': flashcard.backText,
       'difficultyScore': flashcard.difficultyScore,
-      'correctCount': flashcard.correctCount,
-      'incorrectCount': flashcard.incorrectCount,
       'difficultyLevel': flashcard.difficultyLevel.name,
     };
   }
@@ -179,12 +174,10 @@ class DeckRepositorySql {
       map['frontText'],
       map['backText'],
       map['difficultyScore'] ?? 0,
-      map['correctCount'] ?? 0,
-      map['incorrectCount'] ?? 0,
       DifficultyLevel.values.firstWhere(
         (e) => e.name == map['difficultyLevel'],
         orElse: () => DifficultyLevel.easy,
-      ),
+      )
     );
   }
 }

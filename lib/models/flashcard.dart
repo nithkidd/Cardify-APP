@@ -15,8 +15,6 @@ class Flashcard {
   String frontText;
   String backText;
   int difficultyScore;
-  int correctCount;
-  int incorrectCount;
   DifficultyLevel difficultyLevel;
 
   Flashcard(
@@ -25,8 +23,6 @@ class Flashcard {
     this.frontText,
     this.backText,
     this.difficultyScore,
-    this.correctCount,
-    this.incorrectCount,
     this.difficultyLevel,
   ) : flashcardId = flashcardId ?? const Uuid().v4();
 

@@ -41,8 +41,6 @@ class _DeckFormState extends State<DeckForm> {
     final newDeck = Deck(
       null,
       name,
-      0,
-      null,
       _selectedCategory,
     );
 

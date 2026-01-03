@@ -32,8 +32,6 @@ class DatabaseService {
         deckId TEXT PRIMARY KEY,
         name TEXT NOT NULL,
         category TEXT NOT NULL,
-        timesReviewed INTEGER DEFAULT 0,
-        lastReviewed TEXT,
         createdAt TEXT DEFAULT CURRENT_TIMESTAMP
       )
     ''');
@@ -46,8 +44,6 @@ class DatabaseService {
         frontText TEXT NOT NULL,
         backText TEXT NOT NULL,
         difficultyScore INTEGER DEFAULT 0,
-        correctCount INTEGER DEFAULT 0,
-        incorrectCount INTEGER DEFAULT 0,
         difficultyLevel TEXT DEFAULT 'easy',
         createdAt TEXT DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (deckId) REFERENCES decks (deckId) ON DELETE CASCADE
@@ -58,10 +54,10 @@ class DatabaseService {
   CREATE TABLE practice_sessions (
     sessionId TEXT PRIMARY KEY,
     deckId TEXT NOT NULL,
+    deckName TEXT NOT NULL,
     sessionSize INTEGER,
-    startTime TEXT,
-    endTime TEXT,
-    sessionType TEXT
+    sessionType TEXT,
+    createdAt TEXT DEFAULT CURRENT_TIMESTAMP
   )
 ''');
 
@@ -80,8 +76,6 @@ class DatabaseService {
       'deckId': '1',
       'name': 'Spanish Vocabulary',
       'category': 'general',
-      'timesReviewed': 5,
-      'lastReviewed': '2025-12-28',
     });
     await db.insert('flashcards', {
       'flashcardId': '1-1',
@@ -124,8 +118,6 @@ class DatabaseService {
       'deckId': '2',
       'name': 'Math Formulas',
       'category': 'math',
-      'timesReviewed': 3,
-      'lastReviewed': '2025-12-27',
     });
     await db.insert('flashcards', {
       'flashcardId': '2-1',
@@ -154,8 +146,6 @@ class DatabaseService {
       'deckId': '3',
       'name': 'History Facts',
       'category': 'history',
-      'timesReviewed': 7,
-      'lastReviewed': '2025-12-26',
     });
     await db.insert('flashcards', {
       'flashcardId': '3-1',

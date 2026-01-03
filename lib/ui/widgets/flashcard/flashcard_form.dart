@@ -47,8 +47,6 @@ class _FlashcardFormState extends State<FlashcardForm> {
       front,
       back,
       0,
-      0,
-      0,
       DifficultyLevel.easy,
     );
 

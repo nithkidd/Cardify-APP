@@ -105,7 +105,7 @@ class _PracticeFormState extends State<PracticeForm> {
             onChanged: (value) => setState(() => selectedCards = value),
           ),
 
-          const SizedBox(height: 10),
+          const SizedBox(height: 60),
         ],
       ),
     );
