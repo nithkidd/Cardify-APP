@@ -58,7 +58,14 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
                       style: TextStyle(color: Colors.white70, fontSize: 16),
                     ),
                   )
-                : ListView.builder(
+                : GridView.builder(
+                    gridDelegate:
+                        const SliverGridDelegateWithMaxCrossAxisExtent(
+                          maxCrossAxisExtent: 350,
+                          crossAxisSpacing: 12,
+                          mainAxisSpacing: 12,
+                          childAspectRatio: 1.5,
+                        ),
                     padding: const EdgeInsets.all(16),
                     itemCount: widget.deck.flashcards.length,
                     itemBuilder: (context, index) {

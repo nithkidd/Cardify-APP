@@ -13,7 +13,7 @@ class FlashcardItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
         color: Colors.grey[850],
         borderRadius: BorderRadius.circular(12),
@@ -32,6 +32,8 @@ class FlashcardItem extends StatelessWidget {
           const SizedBox(height: 4),
           Text(
             flashcard.frontText,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
             style: const TextStyle(
               color: Colors.white,
               fontSize: 16,
@@ -47,13 +49,16 @@ class FlashcardItem extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 4),
-          Text(
+          Expanded(
+            child: Text(
             flashcard.backText,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
             style: const TextStyle(
               color: Colors.white,
               fontSize: 16,
             ),
-          ),
+          ),)
         ],
       ),
     );
