@@ -53,11 +53,14 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Statistics', style: TextStyle(color: Colors.white)),
-        backgroundColor: const Color(0xFF070706),
+        title: const Text(
+          'Statistics',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+        ),
+        backgroundColor: const Color(0xFF204366),
         iconTheme: const IconThemeData(color: Colors.white),
       ),
-      backgroundColor: const Color(0xFF070706),
+      backgroundColor: Colors.grey[50],
 
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),
@@ -96,12 +99,12 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
             ),
 
             const SizedBox(height: 30),
-            const Divider(color: Colors.white24, thickness: 1),
+            const Divider(color: Colors.black12, thickness: 1),
             const SizedBox(height: 16),
             Text(
               'Recent Sessions (${recentSessions.length})',
               style: const TextStyle(
-                color: Colors.white,
+                color: Color(0xFF204366),
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
@@ -123,7 +126,7 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
                   child: Text(
                     'No practice sessions yet.\nStart practicing to see your stats!',
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white54, fontSize: 16),
+                    style: TextStyle(color: Colors.black38, fontSize: 16),
                   ),
                 ),
               ),

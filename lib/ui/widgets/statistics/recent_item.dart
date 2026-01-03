@@ -14,8 +14,16 @@ class RecentItem extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xFF1E1E1E),
+        color: Colors.white,
         borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.2),
+            spreadRadius: 1,
+            blurRadius: 4,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
       child: Row(
         children: [
@@ -32,7 +40,7 @@ class RecentItem extends StatelessWidget {
                 Text(
                   session.deckName.isEmpty ? 'Unknown' : session.deckName,
                   style: const TextStyle(
-                    color: Colors.white,
+                    color: Colors.black87,
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
                   ),
@@ -40,7 +48,7 @@ class RecentItem extends StatelessWidget {
                 const SizedBox(height: 4),
                 Text(
                   '${session.sessionSize} cards • ${isPractice ? 'Practice' : 'Special'} Mode',
-                  style: const TextStyle(color: Colors.white54, fontSize: 14),
+                  style: const TextStyle(color: Colors.black54, fontSize: 14),
                 ),
               ],
             ),

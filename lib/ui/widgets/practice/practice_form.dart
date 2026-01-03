@@ -19,7 +19,7 @@ class _PracticeFormState extends State<PracticeForm> {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: const BoxDecoration(
-        color: Color(0xFF1E1E1E),
+        color: Colors.white,
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       child: Column(
@@ -33,7 +33,7 @@ class _PracticeFormState extends State<PracticeForm> {
                   alignment: Alignment.centerLeft,
                   child: IconButton(
                     onPressed: () => Navigator.pop(context),
-                    icon: const Icon(Icons.close, color: Colors.white),
+                    icon: const Icon(Icons.close, color: Colors.black),
                   ),
                 ),
               ),
@@ -42,7 +42,7 @@ class _PracticeFormState extends State<PracticeForm> {
                   child: const Text(
                     'Special Session',
                     style: TextStyle(
-                      color: Colors.white,
+                      color: Color(0xFF204366),
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
                     ),
@@ -57,7 +57,7 @@ class _PracticeFormState extends State<PracticeForm> {
                     onPressed: () =>
                         Navigator.pop(context, selectedCards.toInt()),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF00B2FF),
+                      backgroundColor: const Color(0xFF204366),
                       foregroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(
                         horizontal: 16,
@@ -81,7 +81,7 @@ class _PracticeFormState extends State<PracticeForm> {
 
           const Text(
             'Number of card in this Session',
-            style: TextStyle(color: Colors.grey, fontSize: 14),
+            style: TextStyle(color: Colors.black54, fontSize: 14),
           ),
 
           const SizedBox(height: 20),
@@ -89,7 +89,7 @@ class _PracticeFormState extends State<PracticeForm> {
           Text(
             '${selectedCards.toInt()} cards',
             style: const TextStyle(
-              color: Colors.white,
+              color: Color(0xFF204366),
               fontSize: 24,
               fontWeight: FontWeight.bold,
             ),
@@ -101,7 +101,7 @@ class _PracticeFormState extends State<PracticeForm> {
             value: selectedCards,
             min: minCards.toDouble(),
             max: maxCards.toDouble(),
-            activeColor: const Color(0xFF00B2FF),
+            activeColor: const Color(0xFF204366),
             onChanged: (value) => setState(() => selectedCards = value),
           ),
 

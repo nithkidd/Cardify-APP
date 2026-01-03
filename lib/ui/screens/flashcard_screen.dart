@@ -44,10 +44,10 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
           widget.deck.name,
           style: const TextStyle(color: Colors.white),
         ),
-        backgroundColor: const Color(0xFF070706),
+        backgroundColor: const Color(0xFF204366),
         iconTheme: const IconThemeData(color: Colors.white),
       ),
-      backgroundColor: const Color(0xFF070706),
+      backgroundColor: Colors.grey[50],
       body: Column(
         children: [
           Expanded(
@@ -55,7 +55,7 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
                 ? const Center(
                     child: Text(
                       'No Flashcards yet',
-                      style: TextStyle(color: Colors.white70, fontSize: 16),
+                      style: TextStyle(color: Colors.black54, fontSize: 16),
                     ),
                   )
                 : GridView.builder(

@@ -47,15 +47,15 @@ class PracticeItem extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 20),
       padding: const EdgeInsets.all(32),
       decoration: BoxDecoration(
-        color: const Color(0xFF1E1E1E),
+        color: Colors.white,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: isQuestion ? Colors.blue : Colors.green,
+          color: isQuestion ? const Color(0xFF204366) : Colors.green,
           width: 3,
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withAlpha(77),
+            color: Colors.grey.withOpacity(0.3),
             blurRadius: 10,
             offset: const Offset(0, 5),
           ),
@@ -70,7 +70,7 @@ class PracticeItem extends StatelessWidget {
                 child: Text(
                   text,
                   style: const TextStyle(
-                    color: Colors.white,
+                    color: Colors.black,
                     fontSize: 24,
                     fontWeight: FontWeight.w500,
                     decoration: TextDecoration.none,
@@ -85,7 +85,7 @@ class PracticeItem extends StatelessWidget {
             const Text(
               'Tap to reveal answer',
               style: TextStyle(
-                color: Colors.white38,
+                color: Colors.black45,
                 fontSize: 12,
                 decoration: TextDecoration.none,
               ),

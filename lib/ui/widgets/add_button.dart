@@ -20,7 +20,7 @@ class AddButton extends StatelessWidget {
       onPressed: onTap,
 
       style: TextButton.styleFrom(
-        backgroundColor: color ?? Colors.grey[800],
+        backgroundColor: color ?? Color(0xFF204366),
         padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 24),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       ),

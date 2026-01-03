@@ -25,7 +25,8 @@ class PracticeSessionScreen extends StatefulWidget {
 
 class _PracticeSessionScreenState extends State<PracticeSessionScreen> {
   final DeckRepositorySql repository = DeckRepositorySql();
-  final PracticeSessionRepositorySql practiceSessionRepo =  PracticeSessionRepositorySql();
+  final PracticeSessionRepositorySql practiceSessionRepo =
+      PracticeSessionRepositorySql();
   int _currentIndex = 0;
   bool _showAnswer = false;
   int _knowCount = 0;
@@ -72,7 +73,6 @@ class _PracticeSessionScreenState extends State<PracticeSessionScreen> {
     if (isKnown) {
       _knowCount++;
       flashcard.difficultyScore -= 1;
-   
     } else {
       _dontKnowCount++;
       flashcard.difficultyScore += 1;
@@ -86,7 +86,6 @@ class _PracticeSessionScreenState extends State<PracticeSessionScreen> {
         _showAnswer = false;
       });
     } else {
-
       await practiceSessionRepo.addSession(
         PracticeSession(
           null,
@@ -112,7 +111,6 @@ class _PracticeSessionScreenState extends State<PracticeSessionScreen> {
     }
   }
 
-
   void _flipCard() {
     setState(() {
       _showAnswer = !_showAnswer;
@@ -129,32 +127,33 @@ class _PracticeSessionScreenState extends State<PracticeSessionScreen> {
           'Practice: ${widget.deck.name}',
           style: TextStyle(color: Colors.white),
         ),
-        backgroundColor: const Color(0xFF070706),
+        backgroundColor: const Color(0xFF204366),
         iconTheme: const IconThemeData(color: Colors.white),
       ),
-      backgroundColor: const Color(0xFF070706),
+      backgroundColor: Colors.grey[50],
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+          children: [
             Text(
               '${_currentIndex + 1} / ${_flashcards.length} Card',
               style: const TextStyle(
-              color: Colors.white,
-              decoration: TextDecoration.none,
-              fontSize: 20,
+                color: Color(0xFF204366),
+                decoration: TextDecoration.none,
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
               ),
             ),
             const SizedBox(height: 8),
             Text(
               flashcard.difficultyLevel.name.toUpperCase(),
               style: TextStyle(
-              color: flashcard.difficultyLevel == DifficultyLevel.easy
-                ? Colors.green
-                : flashcard.difficultyLevel == DifficultyLevel.medium
-                ? Colors.orange
-                : Colors.red,
-              fontSize: 14,
+                color: flashcard.difficultyLevel == DifficultyLevel.easy
+                    ? Colors.green
+                    : flashcard.difficultyLevel == DifficultyLevel.medium
+                    ? Colors.orange
+                    : Colors.red,
+                fontSize: 14,
               ),
             ),
 
@@ -162,48 +161,48 @@ class _PracticeSessionScreenState extends State<PracticeSessionScreen> {
               margin: const EdgeInsets.all(20),
               padding: const EdgeInsets.all(32),
               child: PracticeItem(
-              flashcard: flashcard,
-              showAnswer: _showAnswer,
-              onFlip: _flipCard,
+                flashcard: flashcard,
+                showAnswer: _showAnswer,
+                onFlip: _flipCard,
               ),
             ),
 
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-              SizedBox(
-                width: 150,
-                height: 48,
-                child: ElevatedButton.icon(
-                onPressed: () => _handleAnswer(flashcard, false),
-                label: const Text("I don't Know"),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFFAF0C0C),
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 12,
+                SizedBox(
+                  width: 150,
+                  height: 48,
+                  child: ElevatedButton.icon(
+                    onPressed: () => _handleAnswer(flashcard, false),
+                    label: const Text("I don't Know"),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFFFF9800),
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 12,
+                      ),
+                    ),
                   ),
                 ),
-                ),
-              ),
-              SizedBox(width: 24),
-              SizedBox(
-                width: 150,
-                height: 48,
-                child: ElevatedButton.icon(
-                onPressed: () => _handleAnswer(flashcard, true),
-                label: const Text("I Know"),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF51A124),
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 12,
+                SizedBox(width: 24),
+                SizedBox(
+                  width: 150,
+                  height: 48,
+                  child: ElevatedButton.icon(
+                    onPressed: () => _handleAnswer(flashcard, true),
+                    label: const Text("I Know"),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF26A69A),
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 12,
+                      ),
+                    ),
                   ),
                 ),
-                ),
-              ),
               ],
             ),
           ],

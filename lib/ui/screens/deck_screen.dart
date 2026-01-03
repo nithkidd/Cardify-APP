@@ -60,40 +60,55 @@ class _DeckScreenState extends State<DeckScreen> {
     Deck? newDeck = await showModalBottomSheet<Deck>(
       isScrollControlled: false,
       context: context,
-      builder: (c) => DeckForm(),
+      builder: (c) => const DeckForm(),
     );
 
     if (newDeck != null) {
       await repository.addDeck(decks, newDeck);
-      setState((
-      ) {});
+      await _loadDecks();
     }
   }
 
-  // void onRemoveDeck(Deck deck) async {
-  //   int deckIndex = decks.indexOf(deck);
+  void onEdit(BuildContext context, Deck deck) async {
+    Deck? updatedDeck = await showModalBottomSheet<Deck>(
+      isScrollControlled: false,
+      context: context,
+      builder: (c) => DeckForm(deck: deck),
+    );
 
-  //   await repository.deleteDeck(deck.deckId);
-  //   setState(() {
-  //     decks.remove(deck);
-  //   });
+    if (updatedDeck != null) {
+      await repository.updateDeck(updatedDeck);
+      await _loadDecks();
+    }
+  }
 
-  //   ScaffoldMessenger.of(context).showSnackBar(
-  //     SnackBar(
-  //       content: Text('Deck deleted'),
-  //       duration: Duration(seconds: 3),
-  //       action: SnackBarAction(
-  //         label: 'Undo',
-  //         onPressed: () async {
-  //           await repository.addDeck(decks, deck);
-  //           setState(() {
-  //             decks.insert(deckIndex, deck);
-  //           });
-  //         },
-  //       ),
-  //     ),
-  //   );
-  // }
+  void onDelete(BuildContext context, Deck deck) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: const Text('Delete Deck'),
+        content: Text(
+          'Are you sure you want to delete "${deck.name}"? This will also delete all flashcards in this deck.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            child: const Text('Delete'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true) {
+      await repository.deleteDeck(deck.deckId);
+      await _loadDecks();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -119,7 +134,7 @@ class _DeckScreenState extends State<DeckScreen> {
           ),
         ],
       ),
-      backgroundColor: Color(0xFF070706),
+      backgroundColor: Colors.grey[50],
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -177,8 +192,10 @@ class _DeckScreenState extends State<DeckScreen> {
                                   ),
                                 ),
                               );
-                              setState(() {});
+                              await _loadDecks();
                             },
+                            onEdit: () => onEdit(context, deck),
+                            onDelete: () => onDelete(context, deck),
                           ),
                         );
                       },

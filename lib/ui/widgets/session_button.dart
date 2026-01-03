@@ -21,7 +21,7 @@ class SessionButton extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.transparent,
           borderRadius: BorderRadius.circular(24),
-          border: Border.all(color: Color(0xFF00B2FF), width: 1.5),
+          border: Border.all(color: Color(0xFF204366), width: 1.5),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -30,7 +30,7 @@ class SessionButton extends StatelessWidget {
             Text(
               label,
               style: const TextStyle(
-                color: Colors.white,
+                color: Color(0xFF204366),
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
               ),

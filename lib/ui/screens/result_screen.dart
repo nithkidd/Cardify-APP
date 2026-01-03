@@ -65,10 +65,10 @@ class ResultScreen extends StatelessWidget {
           'Practice Results',
           style: TextStyle(color: Colors.white),
         ),
-        backgroundColor: const Color(0xFF070706),
+        backgroundColor: const Color(0xFF204366),
         iconTheme: const IconThemeData(color: Colors.white),
       ),
-      backgroundColor: const Color(0xFF070706),
+      backgroundColor: Colors.grey[50],
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(24.0),
@@ -79,28 +79,32 @@ class ResultScreen extends StatelessWidget {
               const Icon(
                 Icons.check_circle_outline,
                 size: 80,
-                color: Color(0xFF00B2FF),
+                color: Color(0xFF204366),
               ),
               const SizedBox(height: 24),
               const Text(
                 'Practice Complete!',
-                style: TextStyle(color: Colors.white, fontSize: 28),
+                style: TextStyle(
+                  color: Color(0xFF204366),
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               const SizedBox(height: 16),
               Text(
                 "Summary for deck: $deckName",
-                style: const TextStyle(color: Colors.white70, fontSize: 18),
+                style: const TextStyle(color: Colors.black87, fontSize: 18),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 40),
               const Text(
                 "You've mastered",
-                style: TextStyle(color: Colors.white70, fontSize: 16),
+                style: TextStyle(color: Colors.black54, fontSize: 16),
               ),
               Text(
                 '$percentage%',
                 style: const TextStyle(
-                  color: Colors.white,
+                  color: Color(0xFF204366),
                   fontSize: 48,
                   fontWeight: FontWeight.bold,
                 ),
@@ -111,12 +115,12 @@ class ResultScreen extends StatelessWidget {
                   ResultStatCard(
                     label: "Memorized",
                     count: knowCount,
-                    color: const Color(0xFF5CFF00),
+                    color: const Color(0xFF26A69A),
                   ),
                   ResultStatCard(
-                    label: "Unknown",
+                    label: "Not Memorized",
                     count: dontKnowCount,
-                    color: const Color(0xFFFF0000),
+                    color: const Color(0xFFFF9800),
                   ),
                 ],
               ),
@@ -128,7 +132,7 @@ class ResultScreen extends StatelessWidget {
                     children: [
                       Expanded(
                         child: SessionButton(
-                          "Repeat Deck",
+                          "Practice Stage",
                           onTap: () =>
                               startSession(context, SessionType.practice),
                         ),
@@ -136,7 +140,7 @@ class ResultScreen extends StatelessWidget {
                       const SizedBox(width: 12),
                       Expanded(
                         child: SessionButton(
-                          "Special Review",
+                          "Special Stage",
                           tooltipMessage: "Harder cards will appear more often",
                           onTap: () =>
                               startSession(context, SessionType.special),
@@ -149,7 +153,7 @@ class ResultScreen extends StatelessWidget {
                     width: double.infinity,
                     child: AddButton(
                       "Return to Decks",
-                      color: Color(0xFF00B2FF),
+                      color: Color(0xFF204366),
                       onTap: () {
                         Navigator.popUntil(context, (route) => route.isFirst);
                       },

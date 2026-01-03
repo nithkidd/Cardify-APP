@@ -57,9 +57,9 @@ class _FlashcardFormState extends State<FlashcardForm> {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(24.0),
-      decoration: BoxDecoration(
-        color: Colors.grey[900],
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -70,45 +70,42 @@ class _FlashcardFormState extends State<FlashcardForm> {
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
+                color: Color(0xFF204366),
               ),
             ),
           ),
           const SizedBox(height: 24),
-          Text(
+          const Text(
             'Flashcard Information',
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.grey[400],
-            ),
+            style: TextStyle(fontSize: 14, color: Colors.black87),
           ),
           const SizedBox(height: 12),
           TextField(
             controller: frontText,
-            style: const TextStyle(color: Colors.white),
+            style: const TextStyle(color: Colors.black87),
             decoration: InputDecoration(
               hintText: 'Front Text',
-              hintStyle: TextStyle(color: Colors.grey[600]),
+              hintStyle: TextStyle(color: Colors.grey[500]),
               enabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.grey[700]!),
+                borderSide: BorderSide(color: Colors.grey[300]!),
               ),
               focusedBorder: const UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.white),
+                borderSide: BorderSide(color: Color(0xFF204366)),
               ),
             ),
           ),
           const SizedBox(height: 24),
-           TextField(
+          TextField(
             controller: backText,
-            style: const TextStyle(color: Colors.white),
+            style: const TextStyle(color: Colors.black87),
             decoration: InputDecoration(
               hintText: 'Back Text',
-              hintStyle: TextStyle(color: Colors.grey[600]),
+              hintStyle: TextStyle(color: Colors.grey[500]),
               enabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.grey[700]!),
+                borderSide: BorderSide(color: Colors.grey[300]!),
               ),
               focusedBorder: const UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.white),
+                borderSide: BorderSide(color: Color(0xFF204366)),
               ),
             ),
           ),
@@ -119,31 +116,34 @@ class _FlashcardFormState extends State<FlashcardForm> {
               TextButton(
                 onPressed: () => Navigator.pop(context),
                 style: TextButton.styleFrom(
-                  backgroundColor: Colors.grey[800],
-                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                  backgroundColor: Colors.grey[300],
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 12,
+                  ),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),
                 ),
                 child: const Text(
                   'Cancel',
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(color: Colors.black87),
                 ),
               ),
               const SizedBox(width: 16),
               ElevatedButton(
                 onPressed: _onCreate,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.cyan,
-                  padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+                  backgroundColor: const Color(0xFF204366),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 32,
+                    vertical: 12,
+                  ),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),
                 ),
-                child: const Text(
-                  'Add',
-                  style: TextStyle(color: Colors.white),
-                ),
+                child: const Text('Add', style: TextStyle(color: Colors.white)),
               ),
             ],
           ),

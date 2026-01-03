@@ -6,10 +6,18 @@ import 'package:flashcard/ui/widgets/session_button.dart';
 import 'package:flutter/material.dart';
 
 class DeckItem extends StatelessWidget {
-  const DeckItem({super.key, required this.deck, required this.onTap});
+  const DeckItem({
+    super.key,
+    required this.deck,
+    required this.onTap,
+    this.onEdit,
+    this.onDelete,
+  });
 
   final Deck deck;
   final VoidCallback? onTap;
+  final VoidCallback? onEdit;
+  final VoidCallback? onDelete;
 
   void startSession(BuildContext context, SessionType sessionType) async {
     if (sessionType == SessionType.special) {
@@ -39,7 +47,6 @@ class DeckItem extends StatelessWidget {
       ),
     );
   }
-  
 
   @override
   Widget build(BuildContext context) {
@@ -48,8 +55,16 @@ class DeckItem extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Colors.grey[850],
+          color: Colors.white,
           borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.2),
+              spreadRadius: 1,
+              blurRadius: 4,
+              offset: const Offset(0, 2),
+            ),
+          ],
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -61,16 +76,44 @@ class DeckItem extends StatelessWidget {
                   child: Text(
                     deck.name,
                     style: const TextStyle(
-                      color: Colors.white,
+                      color: Color(0xFF204366),
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
                 ),
-                Icon(
-                  Icons.edit,
+                PopupMenuButton<String>(
+                  icon: const Icon(Icons.more_vert, color: Color(0xFF204366)),
                   color: Colors.white,
-                  size: 16,
+                  onSelected: (value) {
+                    if (value == 'edit' && onEdit != null) {
+                      onEdit!();
+                    } else if (value == 'delete' && onDelete != null) {
+                      onDelete!();
+                    }
+                  },
+                  itemBuilder: (context) => [
+                    const PopupMenuItem(
+                      value: 'edit',
+                      child: Row(
+                        children: [
+                          Icon(Icons.edit, color: Color(0xFF204366), size: 20),
+                          SizedBox(width: 8),
+                          Text('Edit', style: TextStyle(color: Colors.black87)),
+                        ],
+                      ),
+                    ),
+                    const PopupMenuItem(
+                      value: 'delete',
+                      child: Row(
+                        children: [
+                          Icon(Icons.delete, color: Colors.red, size: 20),
+                          SizedBox(width: 8),
+                          Text('Delete', style: TextStyle(color: Colors.red)),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -78,18 +121,18 @@ class DeckItem extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
-                color: Colors.grey[700],
+                color: const Color(0xFF204366),
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Text(
-                deck.category.name,
+                deck.category.name[0].toUpperCase() + deck.category.name.substring(1),
                 style: const TextStyle(color: Colors.white, fontSize: 12),
               ),
             ),
             const SizedBox(height: 8),
             Text(
               '${deck.flashcards.length} Cards',
-              style: TextStyle(color: Colors.grey[400], fontSize: 14),
+              style: const TextStyle(color: Colors.black54, fontSize: 14),
             ),
             if (deck.flashcards.isNotEmpty) ...[
               const SizedBox(height: 8),
