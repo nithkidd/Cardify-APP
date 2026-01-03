@@ -45,57 +45,95 @@ class _DeckScreenState extends State<DeckScreen> {
     }
   }
 
+  // void onRemoveDeck(Deck deck) async {
+  //   int deckIndex = decks.indexOf(deck);
+    
+  //   await repository.deleteDeck(deck.deckId);
+  //   setState(() {
+  //     decks.remove(deck);
+  //   });
+
+  //   ScaffoldMessenger.of(context).showSnackBar(
+  //     SnackBar(
+  //       content: Text('Deck deleted'),
+  //       duration: Duration(seconds: 3),
+  //       action: SnackBarAction(
+  //         label: 'Undo',
+  //         onPressed: () async {
+  //           await repository.addDeck(decks, deck);
+  //           setState(() {
+  //             decks.insert(deckIndex, deck);
+  //           });
+  //         },
+  //       ),
+  //     ),
+  //   );
+  // }
+
   @override
   Widget build(BuildContext context) {
     if (isLoading) {
       return const Scaffold(
         backgroundColor: Color(0xFF070706),
-        body: Center(child: CircularProgressIndicator(color: Colors.cyan)),
+        body: Center(child: CircularProgressIndicator(color: Color(0xFF204366))),
       );
     }
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ListView.builder(
-              itemCount: decks.length,
-              itemBuilder: (context, index) {
-                final deck = decks[index];
-                return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: DeckItem(
-                    deck: deck,
-                    onTap: () async {
-                      await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => FlashcardScreen(
-                            deck: deck,
-                            repository: repository,
+
+    return Scaffold(
+      appBar: AppBar(
+        title: SizedBox(
+          height: 80,
+          child: Image.asset(
+            'lib/assets/cardify-logo.png',
+            fit: BoxFit.fitHeight,
+          ),
+        ),
+        backgroundColor: const Color(0xFF204366),
+      ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ListView.builder(
+                itemCount: decks.length,
+                itemBuilder: (context, index) {
+                  final deck = decks[index];
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: DeckItem(
+                      deck: deck,
+                      onTap: () async {
+                        await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => FlashcardScreen(
+                              deck: deck,
+                              repository: repository,
+                            ),
                           ),
-                        ),
-                      );
-                      setState(() {});
-                    },
-                  ),
-                );
-              },
+                        );
+                        setState(() {});
+                      },
+                    ),
+                  );
+                },
+              ),
             ),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Center(
-            child: AddButton(
-              "Create a Deck",
-              onTap: () => onCreate(context),
-              icon: Icons.add,
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Center(
+              child: AddButton(
+                "Create a Deck",
+                onTap: () => onCreate(context),
+                icon: Icons.add,
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

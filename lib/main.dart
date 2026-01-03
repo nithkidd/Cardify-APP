@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:flashcard/data/database/database_service.dart';
-import 'package:flashcard/ui/cardify_app.dart';
+import 'package:flashcard/ui/screens/deck_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
@@ -18,5 +18,5 @@ void main() async {
     await DatabaseService().database;
   }
 
-  runApp(MaterialApp(debugShowCheckedModeBanner: false, home: CardifyApp()));
+  runApp(MaterialApp(debugShowCheckedModeBanner: false, home: DeckScreen()));
 }

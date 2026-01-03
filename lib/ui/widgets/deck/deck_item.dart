@@ -13,7 +13,7 @@ class DeckItem extends StatelessWidget {
 
   void startSession(BuildContext context, SessionType sessionType) async {
     if (sessionType == SessionType.special) {
-       int? newDeckSize = await showModalBottomSheet<int>(
+      int? newDeckSize = await showModalBottomSheet<int>(
         isScrollControlled: false,
         context: context,
         builder: (c) => PracticeForm(deckSize: deck.flashcards.length),
@@ -39,6 +39,7 @@ class DeckItem extends StatelessWidget {
       ),
     );
   }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -53,13 +54,25 @@ class DeckItem extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              deck.name,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Text(
+                    deck.name,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+                Icon(
+                  Icons.edit,
+                  color: Colors.white,
+                  size: 16,
+                ),
+              ],
             ),
             const SizedBox(height: 8),
             Container(
