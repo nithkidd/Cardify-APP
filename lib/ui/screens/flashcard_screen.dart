@@ -1,26 +1,23 @@
-import 'package:flashcard/data/repository/deck_repository_sql.dart';
+import 'package:flashcard/data/repository/flashcard_repository_sql.dart';
 import 'package:flashcard/models/deck.dart';
-import 'package:flashcard/ui/widgets/add_button.dart';
+import 'package:flashcard/ui/widgets/button/add_button.dart';
 import 'package:flashcard/ui/widgets/flashcard/flashcard_form.dart';
 import 'package:flashcard/ui/widgets/flashcard/flashcard_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flashcard/models/flashcard.dart';
 
 class FlashcardScreen extends StatefulWidget {
-  const FlashcardScreen({
-    super.key,
-    required this.deck,
-    required this.repository,
-  });
+  const FlashcardScreen({super.key, required this.deck});
 
   final Deck deck;
-  final DeckRepositorySql repository;
 
   @override
   State<FlashcardScreen> createState() => _FlashcardScreenState();
 }
 
 class _FlashcardScreenState extends State<FlashcardScreen> {
+  final FlashcardRepositorySql repository = FlashcardRepositorySql();
+
   void onCreateFlashcard(BuildContext context) async {
     Flashcard? newFlashcard = await showModalBottomSheet<Flashcard>(
       isScrollControlled: false,
@@ -28,10 +25,7 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
       builder: (c) => FlashcardForm(deckId: widget.deck.deckId),
     );
     if (newFlashcard != null) {
-      await widget.repository.addFlashcard(
-        widget.deck.flashcards,
-        newFlashcard,
-      );
+      await repository.addFlashcard(widget.deck.flashcards, newFlashcard);
       setState(() {});
     }
   }

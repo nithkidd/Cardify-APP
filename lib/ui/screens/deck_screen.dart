@@ -2,7 +2,7 @@ import 'package:flashcard/data/repository/deck_repository_sql.dart';
 import 'package:flashcard/models/deck.dart';
 import 'package:flashcard/ui/screens/flashcard_screen.dart';
 import 'package:flashcard/ui/screens/statistics_screen.dart';
-import 'package:flashcard/ui/widgets/add_button.dart';
+import 'package:flashcard/ui/widgets/button/add_button.dart';
 import 'package:flashcard/ui/widgets/deck/deck_form.dart';
 import 'package:flashcard/ui/widgets/deck/deck_item.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +18,7 @@ class _DeckScreenState extends State<DeckScreen> {
   final DeckRepositorySql repository = DeckRepositorySql();
   List<Deck> decks = [];
   List<Deck> filteredDecks = [];
-  bool isLoading = true;
+  bool isLoading = true; 
   final TextEditingController _searchController = TextEditingController();
 
   @override
@@ -52,7 +52,7 @@ class _DeckScreenState extends State<DeckScreen> {
     setState(() {
       decks = loadedDecks;
       filteredDecks = loadedDecks;
-      isLoading = false;
+      isLoading = false; //hey, the data is already loaded you can render now
     });
   }
 
@@ -64,7 +64,7 @@ class _DeckScreenState extends State<DeckScreen> {
     );
 
     if (newDeck != null) {
-      await repository.addDeck(decks, newDeck);
+      await repository.addDeck(newDeck);
       await _loadDecks();
     }
   }
@@ -188,7 +188,6 @@ class _DeckScreenState extends State<DeckScreen> {
                                 MaterialPageRoute(
                                   builder: (context) => FlashcardScreen(
                                     deck: deck,
-                                    repository: repository,
                                   ),
                                 ),
                               );

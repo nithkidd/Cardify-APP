@@ -1,15 +1,12 @@
-// import 'package:flashcard/ui/screens/practice_session_screen.dart';
 import 'package:flashcard/models/deck.dart';
 import 'package:flashcard/models/practice_session.dart';
 import 'package:flashcard/ui/screens/practice_session_screen.dart';
-import 'package:flashcard/ui/widgets/add_button.dart';
+import 'package:flashcard/ui/widgets/button/add_button.dart';
 import 'package:flashcard/ui/widgets/practice/practice_form.dart';
 import 'package:flutter/material.dart';
-import 'package:flashcard/ui/widgets/session_button.dart';
+import 'package:flashcard/ui/widgets/button/session_button.dart';
 import 'package:flashcard/ui/widgets/practice/result_item.dart';
 
-// import 'package:flashcard/models/deck.dart';
-// import 'package:flashcard/models/practice_session.dart';
 class ResultScreen extends StatelessWidget {
   final String deckName;
   final int totalCards;

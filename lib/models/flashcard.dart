@@ -26,18 +26,4 @@ class Flashcard {
     this.difficultyLevel,
   ) : flashcardId = flashcardId ?? const Uuid().v4();
 
-
- DifficultyLevel setDifficultyLevel(int score) {
-    if (score <= 2) {
-      return DifficultyLevel.easy;
-    } else if (score <= 3) {
-      return DifficultyLevel.medium;
-    } else {
-      return DifficultyLevel.hard;
-    }
-  }
-
-  void updateDifficultyLevel() {
-    difficultyLevel = setDifficultyLevel(difficultyScore);
-  }
 }

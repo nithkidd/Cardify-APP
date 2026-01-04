@@ -61,10 +61,12 @@ class SessionButton extends StatelessWidget {
         message: tooltipMessage!,
         textStyle: const TextStyle(color: Colors.white, fontSize: 12),
         decoration: BoxDecoration(
-          color: Colors.grey[800],
+          color: Colors.grey[800],  
           borderRadius: BorderRadius.circular(8),
         ),
+
         child: button,
+        
       );
     }
 

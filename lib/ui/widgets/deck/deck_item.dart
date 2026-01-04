@@ -2,7 +2,7 @@ import 'package:flashcard/models/deck.dart';
 import 'package:flashcard/models/practice_session.dart';
 import 'package:flashcard/ui/screens/practice_session_screen.dart';
 import 'package:flashcard/ui/widgets/practice/practice_form.dart';
-import 'package:flashcard/ui/widgets/session_button.dart';
+import 'package:flashcard/ui/widgets/button/session_button.dart';
 import 'package:flutter/material.dart';
 
 class DeckItem extends StatelessWidget {
@@ -59,7 +59,7 @@ class DeckItem extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.2),
+              color: Colors.grey.withAlpha(51),
               spreadRadius: 1,
               blurRadius: 4,
               offset: const Offset(0, 2),

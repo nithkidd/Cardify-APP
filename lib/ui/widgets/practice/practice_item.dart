@@ -18,6 +18,7 @@ class PracticeItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: FlipCard(
+        key: ValueKey(flashcard.flashcardId),
         direction: FlipDirection.HORIZONTAL,
         speed: 500,
         onFlip: onFlip,
@@ -55,7 +56,7 @@ class PracticeItem extends StatelessWidget {
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.3),
+            color: Colors.grey.withAlpha(77),
             blurRadius: 10,
             offset: const Offset(0, 5),
           ),
@@ -87,6 +88,7 @@ class PracticeItem extends StatelessWidget {
               style: TextStyle(
                 color: Colors.black45,
                 fontSize: 12,
+                fontWeight: FontWeight.bold,
                 decoration: TextDecoration.none,
               ),
             ),

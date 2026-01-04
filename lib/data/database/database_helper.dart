@@ -1,7 +1,7 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
-class DatabaseService {
+class DatabaseHelper {
   static Database? _database;
   static const String _dbName = 'cardify.db';
   static const int _dbVersion = 1;
@@ -82,6 +82,7 @@ class DatabaseService {
       'deckId': '1',
       'frontText': 'Hello',
       'backText': 'Hola',
+      'difficultyScore': 0,
       'difficultyLevel': 'easy',
     });
     await db.insert('flashcards', {
@@ -89,6 +90,7 @@ class DatabaseService {
       'deckId': '1',
       'frontText': 'Goodbye',
       'backText': 'Adiós',
+      'difficultyScore': 1,
       'difficultyLevel': 'easy',
     });
     await db.insert('flashcards', {
@@ -96,6 +98,7 @@ class DatabaseService {
       'deckId': '1',
       'frontText': 'Thank you',
       'backText': 'Gracias',
+      'difficultyScore': 2,
       'difficultyLevel': 'easy',
     });
     await db.insert('flashcards', {
@@ -103,6 +106,7 @@ class DatabaseService {
       'deckId': '1',
       'frontText': 'Please',
       'backText': 'Por favor',
+      'difficultyScore': 3,
       'difficultyLevel': 'medium',
     });
     await db.insert('flashcards', {
@@ -110,6 +114,7 @@ class DatabaseService {
       'deckId': '1',
       'frontText': 'Good morning',
       'backText': 'Buenos días',
+      'difficultyScore': 3,
       'difficultyLevel': 'medium',
     });
 
@@ -124,6 +129,7 @@ class DatabaseService {
       'deckId': '2',
       'frontText': 'Pythagorean theorem',
       'backText': 'a² + b² = c²',
+      'difficultyScore': 3,
       'difficultyLevel': 'medium',
     });
     await db.insert('flashcards', {
@@ -131,6 +137,7 @@ class DatabaseService {
       'deckId': '2',
       'frontText': 'Area of a circle',
       'backText': 'A = πr²',
+      'difficultyScore': 1,
       'difficultyLevel': 'easy',
     });
     await db.insert('flashcards', {
@@ -138,6 +145,7 @@ class DatabaseService {
       'deckId': '2',
       'frontText': 'Quadratic formula',
       'backText': 'x = (-b ± √(b²-4ac)) / 2a',
+      'difficultyScore': 5,
       'difficultyLevel': 'hard',
     });
 
@@ -152,6 +160,7 @@ class DatabaseService {
       'deckId': '3',
       'frontText': 'When did World War II end?',
       'backText': '1945',
+      'difficultyScore': 0,
       'difficultyLevel': 'easy',
     });
     await db.insert('flashcards', {
@@ -159,6 +168,7 @@ class DatabaseService {
       'deckId': '3',
       'frontText': 'Who was the first president of the United States?',
       'backText': 'George Washington',
+      'difficultyScore': 1,
       'difficultyLevel': 'easy',
     });
     await db.insert('flashcards', {
@@ -166,6 +176,7 @@ class DatabaseService {
       'deckId': '3',
       'frontText': 'What year did the French Revolution begin?',
       'backText': '1789',
+      'difficultyScore': 3,
       'difficultyLevel': 'medium',
     });
     await db.insert('flashcards', {
@@ -173,6 +184,7 @@ class DatabaseService {
       'deckId': '3',
       'frontText': 'Who discovered America?',
       'backText': 'Christopher Columbus (1492)',
+      'difficultyScore': 2,
       'difficultyLevel': 'easy',
     });
     await db.insert('flashcards', {
@@ -180,6 +192,7 @@ class DatabaseService {
       'deckId': '3',
       'frontText': 'What was the capital of the Roman Empire?',
       'backText': 'Rome',
+      'difficultyScore': 0,
       'difficultyLevel': 'easy',
     });
   }

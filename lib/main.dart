@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:flashcard/data/database/database_service.dart';
+import 'package:flashcard/data/database/database_helper.dart';
 import 'package:flashcard/ui/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
@@ -15,7 +15,7 @@ void main() async {
   }
 
   // Initialize the database (triggers seed data on first run)
-  await DatabaseService().database;
+  await DatabaseHelper().database;
 
   runApp(MaterialApp(debugShowCheckedModeBanner: false, home: SplashScreen()));
 }
