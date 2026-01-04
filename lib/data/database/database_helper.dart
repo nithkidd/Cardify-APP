@@ -23,7 +23,7 @@ class DatabaseHelper {
       onCreate: _onCreate,
       onUpgrade: _onUpgrade,
       onConfigure: (db) async {
-        //enable foreign key constraints
+        // Enable foreign key constraints
         await db.execute('PRAGMA foreign_keys = ON');
       },
     );
@@ -51,6 +51,7 @@ class DatabaseHelper {
         difficultyLevel TEXT DEFAULT 'easy',
         createdAt TEXT DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (deckId) REFERENCES decks (deckId) ON DELETE CASCADE
+
       )
     ''');
 
@@ -58,7 +59,7 @@ class DatabaseHelper {
   CREATE TABLE practice_sessions (
     sessionId TEXT PRIMARY KEY,
     deckId TEXT NOT NULL,
-    deckName TEXT NOT NULL,
+    title TEXT NOT NULL,
     sessionSize INTEGER,
     sessionType TEXT,
     createdAt TEXT DEFAULT CURRENT_TIMESTAMP,

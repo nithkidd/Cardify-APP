@@ -139,12 +139,12 @@ class DeckItem extends StatelessWidget {
               Row(
                 children: [
                   SessionButton(
-                    "Practice Session",
+                    "Practice Stage",
                     onTap: () => startSession(context, SessionType.practice),
                   ),
                   const SizedBox(width: 8),
                   SessionButton(
-                    "Special Session",
+                    "Special Stage",
                     onTap: () => startSession(context, SessionType.special),
                     tooltipMessage:
                         "This stage the harder card will appear more",

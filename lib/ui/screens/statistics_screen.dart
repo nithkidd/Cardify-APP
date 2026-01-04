@@ -37,7 +37,7 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
       SessionType.special,
     );
     final cards = await _sessionRepository.getTotalCardsReviewed();
-    final recent = await _sessionRepository.getRecentSessionsWithDeckNames();
+    final recent = await _sessionRepository.getRecentSessions();
 
     setState(() {
       totalSessions = total;

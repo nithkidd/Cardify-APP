@@ -76,32 +76,13 @@ class PracticeSessionRepositorySql {
     return sessionMaps.map((map) => _sessionFromMap(map)).toList();
   }
 
-  // Get recent sessions with deck names using SQL JOIN
-  Future<List<PracticeSession>> getRecentSessionsWithDeckNames({
-    int limit = 10,
-  }) async {
-    final db = await _dbHelper.database;
-    final result = await db.rawQuery('''
-      SELECT 
-        practice_sessions.sessionId,
-        practice_sessions.deckId,
-        practice_sessions.sessionSize,
-        practice_sessions.sessionType,
-        decks.name as deckName
-      FROM practice_sessions
-      INNER JOIN decks ON practice_sessions.deckId = decks.deckId
-      ORDER BY practice_sessions.createdAt DESC
-      LIMIT 10
-    ''');
-    return result.map((map) => _sessionFromMap(map)).toList();
-  }
 
   // ============ CONVERTERS ============
   Map<String, dynamic> _sessionToMap(PracticeSession session) {
     return {
       'sessionId': session.sessionId,
       'deckId': session.deckId,
-      'deckName': session.deckName,
+      'title': session.title,
       'sessionSize': session.sessionSize,
       'sessionType': session.sessionType.name,
     };
@@ -110,7 +91,7 @@ class PracticeSessionRepositorySql {
   PracticeSession _sessionFromMap(Map<String, dynamic> map) {
     return PracticeSession(
       map['sessionId'],
-      map['deckName'] ?? '', // deckName (may be null if not joined)
+      map['title'] ?? '', // title (may be null if not joined)
       map['deckId'],
       map['sessionSize'],
       SessionType.values.firstWhere(

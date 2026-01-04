@@ -4,16 +4,16 @@ enum SessionType { practice, special }
 
 class PracticeSession {
   String sessionId;
-  String deckName;
+  String title;
   String deckId;
   int sessionSize;
   SessionType sessionType;
 
   PracticeSession(
     String? sessionId,
-    this.deckName,
+    this.title,
     this.deckId,
     this.sessionSize,
-    this.sessionType, 
+    this.sessionType,
   ) : sessionId = sessionId ?? const Uuid().v4();
 }

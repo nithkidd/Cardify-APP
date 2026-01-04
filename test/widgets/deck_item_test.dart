@@ -97,8 +97,8 @@ void main() {
         ),
       );
 
-      expect(find.text('Practice Session'), findsOneWidget);
-      expect(find.text('Special Session'), findsOneWidget);
+      expect(find.text('Practice Stage'), findsOneWidget);
+      expect(find.text('Special Stage'), findsOneWidget);
     });
 
     testWidgets('should not show session buttons when deck is empty', (
@@ -114,8 +114,8 @@ void main() {
         ),
       );
 
-      expect(find.text('Practice Session'), findsNothing);
-      expect(find.text('Special Session'), findsNothing);
+      expect(find.text('Practice Stage'), findsNothing);
+      expect(find.text('Special Stage'), findsNothing);
     });
   });
 }

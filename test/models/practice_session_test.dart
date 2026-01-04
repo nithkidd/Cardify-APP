@@ -15,7 +15,7 @@ void main() {
         );
 
         expect(session.sessionId, isNotEmpty);
-        expect(session.deckName, 'Test Deck');
+        expect(session.title, 'Test Deck');
         expect(session.deckId, 'deck-123');
         expect(session.sessionSize, 10);
         expect(session.sessionType, SessionType.practice);

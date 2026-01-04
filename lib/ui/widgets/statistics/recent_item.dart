@@ -38,7 +38,7 @@ class RecentItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  session.deckName.isEmpty ? 'Unknown' : session.deckName,
+                  session.title.isEmpty ? 'Unknown' : session.title,
                   style: const TextStyle(
                     color: Colors.black87,
                     fontSize: 16,
