@@ -22,6 +22,10 @@ class DatabaseHelper {
       version: _dbVersion,
       onCreate: _onCreate,
       onUpgrade: _onUpgrade,
+      onConfigure: (db) async {
+        //enable foreign key constraints
+        await db.execute('PRAGMA foreign_keys = ON');
+      },
     );
   }
 
@@ -57,7 +61,8 @@ class DatabaseHelper {
     deckName TEXT NOT NULL,
     sessionSize INTEGER,
     sessionType TEXT,
-    createdAt TEXT DEFAULT CURRENT_TIMESTAMP
+    createdAt TEXT DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (deckId) REFERENCES decks (deckId) ON DELETE CASCADE
   )
 ''');
 

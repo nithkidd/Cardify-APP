@@ -52,11 +52,25 @@ class _DeckScreenState extends State<DeckScreen> {
     setState(() {
       decks = loadedDecks;
       filteredDecks = loadedDecks;
-      isLoading = false; //hey, the data is already loaded you can render now //OKOK
+      isLoading =
+          false; //hey, the data is already loaded you can render now //OKOK
     });
   }
 
-  void _showDeckForm([Deck? deck]) async {
+  void _onCreate() async {
+    final result = await showModalBottomSheet<Deck>(
+      isScrollControlled: false,
+      context: context,
+      builder: (c) => const DeckForm(),
+    );
+
+    if (result != null) {
+      await repository.addDeck(result);
+      await _loadDecks();
+    }
+  }
+
+  void _onEdit(Deck deck) async {
     final result = await showModalBottomSheet<Deck>(
       isScrollControlled: false,
       context: context,
@@ -64,11 +78,7 @@ class _DeckScreenState extends State<DeckScreen> {
     );
 
     if (result != null) {
-      if (deck == null) {
-        await repository.addDeck(result);
-      } else {
-        await repository.updateDeck(result);
-      }
+      await repository.updateDeck(result);
       await _loadDecks();
     }
   }
@@ -183,7 +193,7 @@ class _DeckScreenState extends State<DeckScreen> {
                               );
                               await _loadDecks();
                             },
-                            onEdit: () => _showDeckForm(deck),
+                            onEdit: () => _onEdit(deck),
                             onDelete: () => _onDelete(context, deck),
                           ),
                         );
@@ -196,7 +206,7 @@ class _DeckScreenState extends State<DeckScreen> {
             child: Center(
               child: AddButton(
                 "Create a Deck",
-                onTap: _showDeckForm,
+                onTap: _onCreate,
                 icon: Icons.add,
               ),
             ),

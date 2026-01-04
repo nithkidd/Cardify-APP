@@ -18,7 +18,20 @@ class FlashcardScreen extends StatefulWidget {
 class _FlashcardScreenState extends State<FlashcardScreen> {
   final FlashcardRepositorySql repository = FlashcardRepositorySql();
 
-  void _showFlashcardForm([Flashcard? flashcard]) async {
+  void _onCreate() async {
+    final result = await showModalBottomSheet<Flashcard>(
+      isScrollControlled: false,
+      context: context,
+      builder: (c) => FlashcardForm(deckId: widget.deck.deckId),
+    );
+
+    if (result != null) {
+      await repository.addFlashcard(widget.deck.flashcards, result);
+      setState(() {});
+    }
+  }
+
+  void _onEdit(Flashcard flashcard) async {
     final result = await showModalBottomSheet<Flashcard>(
       isScrollControlled: false,
       context: context,
@@ -27,16 +40,12 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
     );
 
     if (result != null) {
-      if (flashcard == null) {
-        await repository.addFlashcard(widget.deck.flashcards, result);
-      } else {
-        await repository.updateFlashcard(result);
-        final index = widget.deck.flashcards.indexWhere(
-          (element) => element.flashcardId == flashcard.flashcardId,
-        );
-        if (index != -1) {
-          widget.deck.flashcards[index] = result;
-        }
+      await repository.updateFlashcard(result);
+      final index = widget.deck.flashcards.indexWhere(
+        (element) => element.flashcardId == flashcard.flashcardId,
+      );
+      if (index != -1) {
+        widget.deck.flashcards[index] = result;
       }
       setState(() {});
     }
@@ -105,7 +114,7 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
                       final flashcard = widget.deck.flashcards[index];
                       return FlashcardItem(
                         flashcard: flashcard,
-                        onEdit: () => _showFlashcardForm(flashcard),
+                        onEdit: () => _onEdit(flashcard),
                         onDelete: () => _onDelete(flashcard),
                       );
                     },
@@ -116,7 +125,7 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
             child: Center(
               child: AddButton(
                 "Create a Flashcard",
-                onTap: _showFlashcardForm,
+                onTap: _onCreate,
                 icon: Icons.add,
               ),
             ),
