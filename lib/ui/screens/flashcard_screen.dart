@@ -18,14 +18,53 @@ class FlashcardScreen extends StatefulWidget {
 class _FlashcardScreenState extends State<FlashcardScreen> {
   final FlashcardRepositorySql repository = FlashcardRepositorySql();
 
-  void onCreateFlashcard(BuildContext context) async {
-    Flashcard? newFlashcard = await showModalBottomSheet<Flashcard>(
+  void _showFlashcardForm([Flashcard? flashcard]) async {
+    final result = await showModalBottomSheet<Flashcard>(
       isScrollControlled: false,
       context: context,
-      builder: (c) => FlashcardForm(deckId: widget.deck.deckId),
+      builder: (c) =>
+          FlashcardForm(deckId: widget.deck.deckId, flashcard: flashcard),
     );
-    if (newFlashcard != null) {
-      await repository.addFlashcard(widget.deck.flashcards, newFlashcard);
+
+    if (result != null) {
+      if (flashcard == null) {
+        await repository.addFlashcard(widget.deck.flashcards, result);
+      } else {
+        await repository.updateFlashcard(result);
+        final index = widget.deck.flashcards.indexWhere(
+          (element) => element.flashcardId == flashcard.flashcardId,
+        );
+        if (index != -1) {
+          widget.deck.flashcards[index] = result;
+        }
+      }
+      setState(() {});
+    }
+  }
+
+  void _onDelete(Flashcard flashcard) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: const Text('Delete Flashcard'),
+        content: const Text('Are you sure you want to delete this flashcard?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            child: const Text('Delete'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true) {
+      await repository.deleteFlashcard(flashcard.flashcardId);
+      widget.deck.flashcards.remove(flashcard);
       setState(() {});
     }
   }
@@ -64,7 +103,11 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
                     itemCount: widget.deck.flashcards.length,
                     itemBuilder: (context, index) {
                       final flashcard = widget.deck.flashcards[index];
-                      return FlashcardItem(flashcard: flashcard);
+                      return FlashcardItem(
+                        flashcard: flashcard,
+                        onEdit: () => _showFlashcardForm(flashcard),
+                        onDelete: () => _onDelete(flashcard),
+                      );
                     },
                   ),
           ),
@@ -73,7 +116,7 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
             child: Center(
               child: AddButton(
                 "Create a Flashcard",
-                onTap: () => onCreateFlashcard(context),
+                onTap: _showFlashcardForm,
                 icon: Icons.add,
               ),
             ),

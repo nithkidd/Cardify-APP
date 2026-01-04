@@ -2,27 +2,37 @@ import 'package:flashcard/models/flashcard.dart';
 import 'package:flutter/material.dart';
 
 class FlashcardForm extends StatefulWidget {
-  const FlashcardForm({super.key, this.deckId});
+  const FlashcardForm({super.key, this.deckId, this.flashcard});
   final String? deckId;
+  final Flashcard? flashcard;
 
   @override
   State<FlashcardForm> createState() => _FlashcardFormState();
 }
 
 class _FlashcardFormState extends State<FlashcardForm> {
-  final frontText = TextEditingController();
-  final backText = TextEditingController();
+  final _frontTextController = TextEditingController();
+  final _backTextController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.flashcard != null) {
+      _frontTextController.text = widget.flashcard!.frontText;
+      _backTextController.text = widget.flashcard!.backText;
+    }
+  }
 
   @override
   void dispose() {
-    frontText.dispose();
-    backText.dispose();
+    _frontTextController.dispose();
+    _backTextController.dispose();
     super.dispose();
   }
 
   void _onCreate() {
-    final front = frontText.text;
-    final back = backText.text;
+    final front = _frontTextController.text;
+    final back = _backTextController.text;
 
     if (front.isEmpty || back.isEmpty) {
       showDialog(
@@ -41,16 +51,16 @@ class _FlashcardFormState extends State<FlashcardForm> {
       return;
     }
 
-    final newFlashcard = Flashcard(
-      null,
+    final flashcard = Flashcard(
+      widget.flashcard?.flashcardId,
       widget.deckId!,
       front,
       back,
-      0,
-      DifficultyLevel.easy,
+      widget.flashcard?.difficultyScore ?? 0,
+      widget.flashcard?.difficultyLevel ?? DifficultyLevel.easy,
     );
 
-    Navigator.pop<Flashcard>(context, newFlashcard);
+    Navigator.pop<Flashcard>(context, flashcard);
   }
 
   @override
@@ -58,16 +68,18 @@ class _FlashcardFormState extends State<FlashcardForm> {
     return Container(
       padding: const EdgeInsets.all(24.0),
       decoration: const BoxDecoration(
-        color: Colors.white,
+        color: Color.fromRGBO(255, 255, 255, 1),
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Center(
+          Center(
             child: Text(
-              'Create a Flashcard',
-              style: TextStyle(
+              widget.flashcard != null
+                  ? 'Edit a Flashcard'
+                  : 'Create a Flashcard',
+              style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
                 color: Color(0xFF204366),
@@ -81,7 +93,7 @@ class _FlashcardFormState extends State<FlashcardForm> {
           ),
           const SizedBox(height: 12),
           TextField(
-            controller: frontText,
+            controller: _frontTextController,
             style: const TextStyle(color: Colors.black87),
             decoration: InputDecoration(
               hintText: 'Front Text',
@@ -96,7 +108,7 @@ class _FlashcardFormState extends State<FlashcardForm> {
           ),
           const SizedBox(height: 24),
           TextField(
-            controller: backText,
+            controller: _backTextController,
             style: const TextStyle(color: Colors.black87),
             decoration: InputDecoration(
               hintText: 'Back Text',
@@ -143,7 +155,10 @@ class _FlashcardFormState extends State<FlashcardForm> {
                     borderRadius: BorderRadius.circular(20),
                   ),
                 ),
-                child: const Text('Add', style: TextStyle(color: Colors.white)),
+                child: Text(
+                  widget.flashcard != null ? 'Save' : 'Add',
+                  style: const TextStyle(color: Colors.white),
+                ),
               ),
             ],
           ),

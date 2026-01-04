@@ -2,9 +2,16 @@ import 'package:flashcard/models/flashcard.dart';
 import 'package:flutter/material.dart';
 
 class FlashcardItem extends StatelessWidget {
-  const FlashcardItem({super.key, required this.flashcard});
+  const FlashcardItem({
+    super.key,
+    required this.flashcard,
+    this.onEdit,
+    this.onDelete,
+  });
 
   final Flashcard flashcard;
+  final VoidCallback? onEdit;
+  final VoidCallback? onDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -26,13 +33,55 @@ class FlashcardItem extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Front:',
-            style: TextStyle(
-              color: Color(0xFF204366),
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'Front:',
+                style: TextStyle(
+                  color: Color(0xFF204366),
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              PopupMenuButton<String>(
+                icon: const Icon(
+                  Icons.more_vert,
+                  color: Color(0xFF204366),
+                  size: 20,
+                ),
+                color: Colors.white,
+                onSelected: (value) {
+                  if (value == 'edit' && onEdit != null) {
+                    onEdit!();
+                  } else if (value == 'delete' && onDelete != null) {
+                    onDelete!();
+                  }
+                },
+                itemBuilder: (context) => [
+                  const PopupMenuItem(
+                    value: 'edit',
+                    child: Row(
+                      children: [
+                        Icon(Icons.edit, color: Color(0xFF204366), size: 20),
+                        SizedBox(width: 8),
+                        Text('Edit', style: TextStyle(color: Colors.black87)),
+                      ],
+                    ),
+                  ),
+                  const PopupMenuItem(
+                    value: 'delete',
+                    child: Row(
+                      children: [
+                        Icon(Icons.delete, color: Colors.red, size: 20),
+                        SizedBox(width: 8),
+                        Text('Delete', style: TextStyle(color: Colors.red)),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ),
           const SizedBox(height: 4),
           Text(

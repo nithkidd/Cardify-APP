@@ -18,7 +18,7 @@ class _DeckScreenState extends State<DeckScreen> {
   final DeckRepositorySql repository = DeckRepositorySql();
   List<Deck> decks = [];
   List<Deck> filteredDecks = [];
-  bool isLoading = true; 
+  bool isLoading = true;
   final TextEditingController _searchController = TextEditingController();
 
   @override
@@ -52,37 +52,28 @@ class _DeckScreenState extends State<DeckScreen> {
     setState(() {
       decks = loadedDecks;
       filteredDecks = loadedDecks;
-      isLoading = false; //hey, the data is already loaded you can render now
+      isLoading = false; //hey, the data is already loaded you can render now //OKOK
     });
   }
 
-  void onCreate(BuildContext context) async {
-    Deck? newDeck = await showModalBottomSheet<Deck>(
-      isScrollControlled: false,
-      context: context,
-      builder: (c) => const DeckForm(),
-    );
-
-    if (newDeck != null) {
-      await repository.addDeck(newDeck);
-      await _loadDecks();
-    }
-  }
-
-  void onEdit(BuildContext context, Deck deck) async {
-    Deck? updatedDeck = await showModalBottomSheet<Deck>(
+  void _showDeckForm([Deck? deck]) async {
+    final result = await showModalBottomSheet<Deck>(
       isScrollControlled: false,
       context: context,
       builder: (c) => DeckForm(deck: deck),
     );
 
-    if (updatedDeck != null) {
-      await repository.updateDeck(updatedDeck);
+    if (result != null) {
+      if (deck == null) {
+        await repository.addDeck(result);
+      } else {
+        await repository.updateDeck(result);
+      }
       await _loadDecks();
     }
   }
 
-  void onDelete(BuildContext context, Deck deck) async {
+  void _onDelete(BuildContext context, Deck deck) async {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (BuildContext context) => AlertDialog(
@@ -186,15 +177,14 @@ class _DeckScreenState extends State<DeckScreen> {
                               await Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => FlashcardScreen(
-                                    deck: deck,
-                                  ),
+                                  builder: (context) =>
+                                      FlashcardScreen(deck: deck),
                                 ),
                               );
                               await _loadDecks();
                             },
-                            onEdit: () => onEdit(context, deck),
-                            onDelete: () => onDelete(context, deck),
+                            onEdit: () => _showDeckForm(deck),
+                            onDelete: () => _onDelete(context, deck),
                           ),
                         );
                       },
@@ -206,7 +196,7 @@ class _DeckScreenState extends State<DeckScreen> {
             child: Center(
               child: AddButton(
                 "Create a Deck",
-                onTap: () => onCreate(context),
+                onTap: _showDeckForm,
                 icon: Icons.add,
               ),
             ),

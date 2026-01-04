@@ -14,6 +14,15 @@ class _DeckFormState extends State<DeckForm> {
   final _nameController = TextEditingController();
   DeckCategory _selectedCategory = DeckCategory.general;
 
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.deck != null) {
+      _nameController.text = widget.deck!.name;
+      _selectedCategory = widget.deck!.category;
+    }
+  }
   @override
   void dispose() {
     _nameController.dispose();
