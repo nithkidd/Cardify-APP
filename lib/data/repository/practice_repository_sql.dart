@@ -72,10 +72,13 @@ class PracticeSessionRepositorySql {
   // Get recent sessions (limit 10)
   Future<List<PracticeSession>> getRecentSessions({int limit = 10}) async {
     final db = await _dbHelper.database;
-    final sessionMaps = await db.query('practice_sessions', limit: limit);
+    final sessionMaps = await db.query(
+      'practice_sessions',
+      orderBy: 'createdAt DESC',
+      limit: limit,
+    );
     return sessionMaps.map((map) => _sessionFromMap(map)).toList();
   }
-
 
   // ============ CONVERTERS ============
   Map<String, dynamic> _sessionToMap(PracticeSession session) {
