@@ -2,7 +2,7 @@ import 'package:flashcard/models/deck.dart';
 import 'package:flashcard/models/practice_session.dart';
 import 'package:flashcard/ui/screens/practice_session_screen.dart';
 import 'package:flashcard/ui/widgets/button/add_button.dart';
-import 'package:flashcard/ui/widgets/practice/practice_form.dart';
+import 'package:flashcard/ui/widgets/practice/special_session_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flashcard/ui/widgets/button/session_button.dart';
 import 'package:flashcard/ui/widgets/practice/result_item.dart';
@@ -28,7 +28,7 @@ class ResultScreen extends StatelessWidget {
       int? newDeckSize = await showModalBottomSheet<int>(
         isScrollControlled: false,
         context: context,
-        builder: (c) => PracticeForm(deckSize: deck.flashcards.length),
+        builder: (c) => SpecialSessionForm(deckSize: deck.flashcards.length),
       );
       if (newDeckSize == null) return;
       Navigator.push(

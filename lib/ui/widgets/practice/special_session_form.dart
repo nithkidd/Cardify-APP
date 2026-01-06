@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-class PracticeForm extends StatefulWidget {
+class SpecialSessionForm extends StatefulWidget {
   final int deckSize;
 
-  const PracticeForm({super.key, required this.deckSize});
+  const SpecialSessionForm({super.key, required this.deckSize});
 
   @override
-  State<PracticeForm> createState() => _PracticeFormState();
+  State<SpecialSessionForm> createState() => _SpecialSessionFormState();
 }
 
-class _PracticeFormState extends State<PracticeForm> {
+class _SpecialSessionFormState extends State<SpecialSessionForm> {
   late double selectedCards = minCards.toDouble();
   late int minCards = widget.deckSize.clamp(1, widget.deckSize);
   late int maxCards = widget.deckSize * 4;

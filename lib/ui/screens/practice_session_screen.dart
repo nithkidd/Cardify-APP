@@ -45,13 +45,13 @@ class _PracticeSessionScreenState extends State<PracticeSessionScreen> {
 
     return _pickCards();
   }
-
+  
   //pick card for the special session 
   List<Flashcard> _pickCards() {
 
     //this list will take all the card base on the difficulty level base on enum value
     //easy 1 time, it will add one card to the list 
-    //muedium 2 time, it will add two card to the list
+    //muedium 3 time, it will add two card to the list
     List<Flashcard> pool = [];
     for (var card in widget.deck.flashcards) {
       for (int i = 0; i < card.difficultyLevel.times; i++) {

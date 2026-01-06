@@ -28,6 +28,7 @@ class ResultStatCard extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
+          
         ],
       ),
     );
