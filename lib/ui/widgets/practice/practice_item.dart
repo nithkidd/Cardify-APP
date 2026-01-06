@@ -6,13 +6,9 @@ class PracticeItem extends StatelessWidget {
   const PracticeItem({
     super.key,
     required this.flashcard,
-    required this.showAnswer,
-    required this.onFlip,
   });
 
   final Flashcard flashcard;
-  final bool showAnswer;
-  final VoidCallback onFlip;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +17,6 @@ class PracticeItem extends StatelessWidget {
         key: ValueKey(flashcard.flashcardId),
         direction: FlipDirection.HORIZONTAL,
         speed: 500,
-        onFlip: onFlip,
         flipOnTouch: true,
         front: _buildCard(
           context: context,

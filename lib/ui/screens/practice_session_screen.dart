@@ -27,7 +27,6 @@ class _PracticeSessionScreenState extends State<PracticeSessionScreen> {
   final FlashcardRepositorySql flashcardRepositorySql = FlashcardRepositorySql();
   final PracticeSessionRepositorySql practiceSessionRepositorySql = PracticeSessionRepositorySql();
   int _currentIndex = 0;
-  bool _showAnswer = false;
   int _knowCount = 0;
   int _dontKnowCount = 0;
   late List<Flashcard> _flashcards;
@@ -87,7 +86,6 @@ class _PracticeSessionScreenState extends State<PracticeSessionScreen> {
     if (_currentIndex < _flashcards.length - 1) {
       setState(() {
         _currentIndex++;
-        _showAnswer = false;
       });
     } else {
       await practiceSessionRepositorySql.addSession(
@@ -113,12 +111,6 @@ class _PracticeSessionScreenState extends State<PracticeSessionScreen> {
         ),
       );
     }
-  }
-
-  void _flipCard() {
-    setState(() {
-      _showAnswer = !_showAnswer;
-    });
   }
 
   @override
@@ -166,8 +158,7 @@ class _PracticeSessionScreenState extends State<PracticeSessionScreen> {
               padding: const EdgeInsets.all(32),
               child: PracticeItem(
                 flashcard: flashcard,
-                showAnswer: _showAnswer,
-                onFlip: _flipCard,
+                
               ),
             ),
 
