@@ -1,30 +1,33 @@
-import 'package:flashcard/data/repository/flashcard_repository.dart';
 import 'package:flashcard/models/flashcard.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('FlashcardRepository Tests', () {
-    late FlashcardRepository repository;
-
-    setUp(() {
-      repository = FlashcardRepository();
-    });
-
     group('Difficulty Calculation', () {
       test('should return easy for score <= 2', () {
-        expect(repository.calculateDifficultyLevel(0), DifficultyLevel.easy);
-        expect(repository.calculateDifficultyLevel(1), DifficultyLevel.easy);
-        expect(repository.calculateDifficultyLevel(2), DifficultyLevel.easy);
+        expect(DifficultyLevel.fromScore(0), DifficultyLevel.easy);
+        expect(DifficultyLevel.fromScore(1), DifficultyLevel.easy);
+        expect(DifficultyLevel.fromScore(2), DifficultyLevel.easy);
       });
 
       test('should return medium for score 3', () {
-        expect(repository.calculateDifficultyLevel(3), DifficultyLevel.medium);
+        expect(DifficultyLevel.fromScore(3), DifficultyLevel.medium);
       });
 
       test('should return hard for score > 3', () {
-        expect(repository.calculateDifficultyLevel(4), DifficultyLevel.hard);
-        expect(repository.calculateDifficultyLevel(5), DifficultyLevel.hard);
-        expect(repository.calculateDifficultyLevel(10), DifficultyLevel.hard);
+        expect(DifficultyLevel.fromScore(4), DifficultyLevel.hard);
+        expect(DifficultyLevel.fromScore(5), DifficultyLevel.hard);
+        expect(DifficultyLevel.fromScore(10), DifficultyLevel.hard);
+      });
+
+      test('should clamp score below 0 to 0 (easy)', () {
+        expect(DifficultyLevel.fromScore(-5), DifficultyLevel.easy);
+        expect(DifficultyLevel.fromScore(-1), DifficultyLevel.easy);
+      });
+
+      test('should clamp score above 10 to 10 (hard)', () {
+        expect(DifficultyLevel.fromScore(15), DifficultyLevel.hard);
+        expect(DifficultyLevel.fromScore(100), DifficultyLevel.hard);
       });
     });
 

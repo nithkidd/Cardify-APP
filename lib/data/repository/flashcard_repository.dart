@@ -26,6 +26,7 @@ class FlashcardRepository {
     if (maps.isEmpty) return null;
     return Flashcard.fromMap(maps.first);
   }
+
   // ============ ADD FLASHCARD ============
   Future<void> addFlashcard(Flashcard flashcard) async {
     final db = await _dbHelper.database;
@@ -57,22 +58,5 @@ class FlashcardRepository {
   Future<void> deleteByDeckId(String deckId) async {
     final db = await _dbHelper.database;
     await db.delete('flashcards', where: 'deckId = ?', whereArgs: [deckId]);
-  }
-
-  DifficultyLevel calculateDifficultyLevel(int score) {
-    if (score <= 2) {
-      return DifficultyLevel.easy;
-    } else if (score <= 3) {
-      return DifficultyLevel.medium;
-    } else {
-      return DifficultyLevel.hard;
-    }
-  }
-
-  Future<void> updateFlashcardDifficulty(Flashcard flashcard) async {
-    flashcard.difficultyLevel = calculateDifficultyLevel(
-      flashcard.difficultyScore,
-    );
-    await updateFlashcard(flashcard);
   }
 }

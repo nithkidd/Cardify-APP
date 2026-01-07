@@ -1,12 +1,22 @@
 import 'package:uuid/uuid.dart';
 
 enum DifficultyLevel {
-  easy(1),    
+  easy(1),
   medium(3),
-  hard(5);    
+  hard(5);
 
   final int times;
   const DifficultyLevel(this.times);
+
+  static DifficultyLevel fromScore(int score) {
+    if (score <= 2) {
+      return DifficultyLevel.easy;
+    } else if (score <= 3) {
+      return DifficultyLevel.medium;
+    } else {
+      return DifficultyLevel.hard;
+    }
+  }
 }
 
 class Flashcard {
@@ -26,6 +36,7 @@ class Flashcard {
     this.difficultyLevel,
   ) : flashcardId = flashcardId ?? const Uuid().v4();
 
+  
   // ============ MAPPERS ============
   /// Convert Flashcard to Map for database storage
   Map<String, dynamic> toMap() {
@@ -53,6 +64,5 @@ class Flashcard {
       ),
     );
   }
-
 
 }

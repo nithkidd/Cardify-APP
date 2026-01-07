@@ -74,14 +74,19 @@ class _PracticeSessionScreenState extends State<PracticeSessionScreen> {
   void _handleAnswer(Flashcard flashcard, bool isKnown) async {
     if (isKnown) {
       _knowCount++;
-      flashcard.difficultyScore -= 1;
+      flashcard.difficultyScore = (flashcard.difficultyScore - 1).clamp(0, 10);
     } else {
       _dontKnowCount++;
-      flashcard.difficultyScore += 1;
+      flashcard.difficultyScore = (flashcard.difficultyScore + 1).clamp(0, 10);
     }
 
-    //update flashcard difficulty after each answer
-    await flashcardRepository.updateFlashcardDifficulty(flashcard);
+    // Update difficulty level in memory based on new score
+    flashcard.difficultyLevel = DifficultyLevel.fromScore(
+      flashcard.difficultyScore,
+    );
+
+    // Update flashcard in database
+    await flashcardRepository.updateFlashcard(flashcard);
 
     if (_currentIndex < _flashcards.length - 1) {
       setState(() {
