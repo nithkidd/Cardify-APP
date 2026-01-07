@@ -26,4 +26,33 @@ class Flashcard {
     this.difficultyLevel,
   ) : flashcardId = flashcardId ?? const Uuid().v4();
 
+  // ============ MAPPERS ============
+  /// Convert Flashcard to Map for database storage
+  Map<String, dynamic> toMap() {
+    return {
+      'flashcardId': flashcardId,
+      'deckId': deckId,
+      'frontText': frontText,
+      'backText': backText,
+      'difficultyScore': difficultyScore,
+      'difficultyLevel': difficultyLevel.name,
+    };
+  }
+
+  /// Create Flashcard from database Map
+  factory Flashcard.fromMap(Map<String, dynamic> map) {
+    return Flashcard(
+      map['flashcardId'],
+      map['deckId'],
+      map['frontText'],
+      map['backText'],
+      map['difficultyScore'] ?? 0,
+      DifficultyLevel.values.firstWhere(
+        (e) => e.name == map['difficultyLevel'],
+        orElse: () => DifficultyLevel.easy,
+      ),
+    );
+  }
+
+
 }

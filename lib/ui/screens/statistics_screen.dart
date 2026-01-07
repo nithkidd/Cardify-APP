@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flashcard/data/repository/practice_repository_sql.dart';
+import 'package:flashcard/data/repository/practice_repository.dart';
 import 'package:flashcard/models/practice_session.dart';
 import 'package:flashcard/ui/widgets/statistics/statistic_item.dart';
 import 'package:flashcard/ui/widgets/statistics/recent_item.dart';
@@ -12,8 +12,8 @@ class StatisticsScreen extends StatefulWidget {
 }
 
 class _StatisticsScreenState extends State<StatisticsScreen> {
-  final PracticeSessionRepositorySql _sessionRepository =
-      PracticeSessionRepositorySql();
+  final PracticeSessionRepository practiceSessionRepository =
+      PracticeSessionRepository();
 
   List<PracticeSession> recentSessions = [];
   bool isLoading = true;
@@ -29,15 +29,15 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
   }
 
   Future<void> _loadData() async {
-    final total = await _sessionRepository.getTotalSessions();
-    final practice = await _sessionRepository.getSessionsByType(
+    final total = await practiceSessionRepository.getTotalSessions();
+    final practice = await practiceSessionRepository.getSessionsByType(
       SessionType.practice,
     );
-    final special = await _sessionRepository.getSessionsByType(
+    final special = await practiceSessionRepository.getSessionsByType(
       SessionType.special,
     );
-    final cards = await _sessionRepository.getTotalCardsReviewed();
-    final recent = await _sessionRepository.getRecentSessions();
+    final cards = await practiceSessionRepository.getTotalCardsReviewed();
+    final recent = await practiceSessionRepository.getRecentSessions();
 
     setState(() {
       totalSessions = total;

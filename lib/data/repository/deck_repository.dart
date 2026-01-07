@@ -1,10 +1,10 @@
 import 'package:flashcard/data/database/database_helper.dart';
-import 'package:flashcard/data/repository/flashcard_repository_sql.dart';
+import 'package:flashcard/data/repository/flashcard_repository.dart';
 import 'package:flashcard/models/deck.dart';
 
-class DeckRepositorySql {
+class DeckRepository {
   final DatabaseHelper _dbHelper = DatabaseHelper();
-  final FlashcardRepositorySql _flashcardRepository = FlashcardRepositorySql();
+  final FlashcardRepository _flashcardRepository = FlashcardRepository();
 
   // ============ LOAD ALL DECKS ============
   Future<List<Deck>> loadAll() async {
@@ -14,7 +14,7 @@ class DeckRepositorySql {
 
     List<Deck> decks = [];
     for (var deckMap in deckMaps) {
-      final deck = _deckFromMap(deckMap);
+      final deck = Deck.fromMap(deckMap);
       deck.flashcards = await _flashcardRepository.loadByDeckId(deck.deckId);
       decks.add(deck);
     }
@@ -34,7 +34,7 @@ class DeckRepositorySql {
 
     if (deckMaps.isEmpty) return null;
 
-    final deck = _deckFromMap(deckMaps.first);
+    final deck = Deck.fromMap(deckMaps.first);
     deck.flashcards = await _flashcardRepository.loadByDeckId(deckId);
     return deck;
   }
@@ -42,7 +42,7 @@ class DeckRepositorySql {
   // ============ ADD DECK ============
   Future<void> addDeck(Deck deck) async {
     final db = await _dbHelper.database;
-    await db.insert('decks', _deckToMap(deck));
+    await db.insert('decks', deck.toMap());
   }
 
   // ============ UPDATE DECK ============
@@ -50,7 +50,7 @@ class DeckRepositorySql {
     final db = await _dbHelper.database;
     await db.update(
       'decks',
-      _deckToMap(deck),
+      deck.toMap(),
       where: 'deckId = ?',
       whereArgs: [deck.deckId],
     );
@@ -68,25 +68,5 @@ class DeckRepositorySql {
     final db = await _dbHelper.database;
     await db.delete('flashcards');
     await db.delete('decks');
-  }
-
-  // ============ CONVERTERS ============
-  Map<String, dynamic> _deckToMap(Deck deck) {
-    return {
-      'deckId': deck.deckId,
-      'name': deck.name,
-      'category': deck.category.name,
-    };
-  }
-
-  Deck _deckFromMap(Map<String, dynamic> map) {
-    return Deck(
-      map['deckId'],
-      map['name'],
-      DeckCategory.values.firstWhere(
-        (e) => e.name == map['category'],
-        orElse: () => DeckCategory.general,
-      ),
-    );
   }
 }

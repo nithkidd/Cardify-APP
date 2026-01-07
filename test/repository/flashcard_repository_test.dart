@@ -1,13 +1,13 @@
-import 'package:flashcard/data/repository/flashcard_repository_sql.dart';
+import 'package:flashcard/data/repository/flashcard_repository.dart';
 import 'package:flashcard/models/flashcard.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  group('FlashcardRepositorySql Tests', () {
-    late FlashcardRepositorySql repository;
+  group('FlashcardRepository Tests', () {
+    late FlashcardRepository repository;
 
     setUp(() {
-      repository = FlashcardRepositorySql();
+      repository = FlashcardRepository();
     });
 
     group('Difficulty Calculation', () {

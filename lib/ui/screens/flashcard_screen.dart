@@ -1,4 +1,4 @@
-import 'package:flashcard/data/repository/flashcard_repository_sql.dart';
+import 'package:flashcard/data/repository/flashcard_repository.dart';
 import 'package:flashcard/models/deck.dart';
 import 'package:flashcard/ui/widgets/button/add_button.dart';
 import 'package:flashcard/ui/widgets/flashcard/flashcard_form.dart';
@@ -16,7 +16,7 @@ class FlashcardScreen extends StatefulWidget {
 }
 
 class _FlashcardScreenState extends State<FlashcardScreen> {
-  final FlashcardRepositorySql repository = FlashcardRepositorySql();
+  final FlashcardRepository flashcardRepository = FlashcardRepository();
 
   void _onCreate() async {
     final result = await showModalBottomSheet<Flashcard>(
@@ -26,8 +26,10 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
     );
 
     if (result != null) {
-      await repository.addFlashcard(widget.deck.flashcards, result);
-      setState(() {});
+      await flashcardRepository.addFlashcard(result);
+      setState(() {
+        widget.deck.flashcards.add(result);
+      });
     }
   }
 
@@ -38,9 +40,8 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
       builder: (c) =>
           FlashcardForm(deckId: widget.deck.deckId, flashcard: flashcard),
     );
-
     if (result != null) {
-      await repository.updateFlashcard(result);
+      await flashcardRepository.updateFlashcard(result);
       final index = widget.deck.flashcards.indexWhere(
         (element) => element.flashcardId == flashcard.flashcardId,
       );
@@ -72,9 +73,10 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
     );
 
     if (confirmed == true) {
-      await repository.deleteFlashcard(flashcard.flashcardId);
-      widget.deck.flashcards.remove(flashcard);
-      setState(() {});
+      await flashcardRepository.deleteFlashcard(flashcard.flashcardId);
+      setState(() {
+        widget.deck.flashcards.remove(flashcard);
+      });
     }
   }
 

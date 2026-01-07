@@ -1,20 +1,20 @@
 import 'package:flashcard/data/database/database_helper.dart';
 import 'package:flashcard/models/practice_session.dart';
 
-class PracticeSessionRepositorySql {
+class PracticeSessionRepository {
   final DatabaseHelper _dbHelper = DatabaseHelper();
 
   // ============ ADD PRACTICE SESSION ============
   Future<void> addSession(PracticeSession session) async {
     final db = await _dbHelper.database;
-    await db.insert('practice_sessions', _sessionToMap(session));
+    await db.insert('practice_sessions', session.toMap());
   }
 
   // ============ LOAD ALL SESSIONS ============
   Future<List<PracticeSession>> loadAll() async {
     final db = await _dbHelper.database;
     final sessionMaps = await db.query('practice_sessions');
-    return sessionMaps.map((map) => _sessionFromMap(map)).toList();
+    return sessionMaps.map((map) => PracticeSession.fromMap(map)).toList();
   }
 
   // ============ LOAD BY ID ============
@@ -26,7 +26,7 @@ class PracticeSessionRepositorySql {
       whereArgs: [sessionId],
     );
     if (maps.isEmpty) return null;
-    return _sessionFromMap(maps.first);
+    return PracticeSession.fromMap(maps.first);
   }
 
   // ============ DELETE SESSION ============
@@ -77,30 +77,6 @@ class PracticeSessionRepositorySql {
       orderBy: 'createdAt DESC',
       limit: limit,
     );
-    return sessionMaps.map((map) => _sessionFromMap(map)).toList();
-  }
-
-  // ============ CONVERTERS ============
-  Map<String, dynamic> _sessionToMap(PracticeSession session) {
-    return {
-      'sessionId': session.sessionId,
-      'deckId': session.deckId,
-      'title': session.title,
-      'sessionSize': session.sessionSize,
-      'sessionType': session.sessionType.name,
-    };
-  }
-
-  PracticeSession _sessionFromMap(Map<String, dynamic> map) {
-    return PracticeSession(
-      map['sessionId'],
-      map['title'] ?? '', // title (may be null if not joined)
-      map['deckId'],
-      map['sessionSize'],
-      SessionType.values.firstWhere(
-        (e) => e.name == map['sessionType'],
-        orElse: () => SessionType.practice,
-      ),
-    );
+    return sessionMaps.map((map) => PracticeSession.fromMap(map)).toList();
   }
 }

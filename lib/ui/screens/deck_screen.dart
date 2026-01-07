@@ -1,4 +1,4 @@
-import 'package:flashcard/data/repository/deck_repository_sql.dart';
+import 'package:flashcard/data/repository/deck_repository.dart';
 import 'package:flashcard/models/deck.dart';
 import 'package:flashcard/ui/screens/flashcard_screen.dart';
 import 'package:flashcard/ui/screens/statistics_screen.dart';
@@ -15,7 +15,7 @@ class DeckScreen extends StatefulWidget {
 }
 
 class _DeckScreenState extends State<DeckScreen> {
-  final DeckRepositorySql repository = DeckRepositorySql();
+  final DeckRepository deckRepository = DeckRepository();
   List<Deck> decks = [];
   List<Deck> filteredDecks = [];
   bool isLoading = true;
@@ -48,7 +48,7 @@ class _DeckScreenState extends State<DeckScreen> {
   }
 
   Future<void> _loadDecks() async {
-    final loadedDecks = await repository.loadAll();
+    final loadedDecks = await deckRepository.loadAll();
     setState(() {
       decks = loadedDecks;
       filteredDecks = loadedDecks;
@@ -65,8 +65,11 @@ class _DeckScreenState extends State<DeckScreen> {
     );
 
     if (result != null) {
-      await repository.addDeck(result);
-      await _loadDecks();
+      await deckRepository.addDeck(result);
+      setState(() {
+        decks.add(result);
+        _filterDecks();
+      });
     }
   }
 
@@ -78,8 +81,15 @@ class _DeckScreenState extends State<DeckScreen> {
     );
 
     if (result != null) {
-      await repository.updateDeck(result);
-      await _loadDecks();
+      await deckRepository.updateDeck(result);
+      setState(() {
+        final index = decks.indexWhere((d) => d.deckId == deck.deckId);
+        if (index != -1) {
+          result.flashcards = deck.flashcards;
+          decks[index] = result;
+        }
+        _filterDecks();
+      });
     }
   }
 
@@ -106,8 +116,11 @@ class _DeckScreenState extends State<DeckScreen> {
     );
 
     if (confirmed == true) {
-      await repository.deleteDeck(deck.deckId);
-      await _loadDecks();
+      await deckRepository.deleteDeck(deck.deckId);
+      setState(() {
+        decks.remove(deck);
+        _filterDecks();
+      });
     }
   }
 

@@ -1,7 +1,7 @@
 import 'package:flashcard/data/database/database_helper.dart';
 import 'package:flashcard/models/flashcard.dart';
 
-class FlashcardRepositorySql {
+class FlashcardRepository {
   final DatabaseHelper _dbHelper = DatabaseHelper();
 
   // ============ LOAD FLASHCARDS BY DECK ============
@@ -12,7 +12,7 @@ class FlashcardRepositorySql {
       where: 'deckId = ?',
       whereArgs: [deckId],
     );
-    return flashcardMaps.map((map) => _flashcardFromMap(map)).toList();
+    return flashcardMaps.map((map) => Flashcard.fromMap(map)).toList();
   }
 
   // ============ LOAD FLASHCARD BY ID ============
@@ -24,17 +24,12 @@ class FlashcardRepositorySql {
       whereArgs: [flashcardId],
     );
     if (maps.isEmpty) return null;
-    return _flashcardFromMap(maps.first);
+    return Flashcard.fromMap(maps.first);
   }
-
   // ============ ADD FLASHCARD ============
-  Future<void> addFlashcard(
-    List<Flashcard> flashcards,
-    Flashcard flashcard,
-  ) async {
+  Future<void> addFlashcard(Flashcard flashcard) async {
     final db = await _dbHelper.database;
-    await db.insert('flashcards', _flashcardToMap(flashcard));
-    flashcards.add(flashcard); // Add to in-memory list
+    await db.insert('flashcards', flashcard.toMap());
   }
 
   // ============ UPDATE FLASHCARD ============
@@ -42,7 +37,7 @@ class FlashcardRepositorySql {
     final db = await _dbHelper.database;
     await db.update(
       'flashcards',
-      _flashcardToMap(flashcard),
+      flashcard.toMap(),
       where: 'flashcardId = ?',
       whereArgs: [flashcard.flashcardId],
     );
@@ -64,7 +59,6 @@ class FlashcardRepositorySql {
     await db.delete('flashcards', where: 'deckId = ?', whereArgs: [deckId]);
   }
 
-  // ============ DIFFICULTY LOGIC ============
   DifficultyLevel calculateDifficultyLevel(int score) {
     if (score <= 2) {
       return DifficultyLevel.easy;
@@ -80,31 +74,5 @@ class FlashcardRepositorySql {
       flashcard.difficultyScore,
     );
     await updateFlashcard(flashcard);
-  }
-
-  // ============ CONVERTERS ============
-  Map<String, dynamic> _flashcardToMap(Flashcard flashcard) {
-    return {
-      'flashcardId': flashcard.flashcardId,
-      'deckId': flashcard.deckId,
-      'frontText': flashcard.frontText,
-      'backText': flashcard.backText,
-      'difficultyScore': flashcard.difficultyScore,
-      'difficultyLevel': flashcard.difficultyLevel.name,
-    };
-  }
-
-  Flashcard _flashcardFromMap(Map<String, dynamic> map) {
-    return Flashcard(
-      map['flashcardId'],
-      map['deckId'],
-      map['frontText'],
-      map['backText'],
-      map['difficultyScore'] ?? 0,
-      DifficultyLevel.values.firstWhere(
-        (e) => e.name == map['difficultyLevel'],
-        orElse: () => DifficultyLevel.easy,
-      ),
-    );
   }
 }

@@ -1,5 +1,5 @@
-import 'package:flashcard/data/repository/flashcard_repository_sql.dart';
-import 'package:flashcard/data/repository/practice_repository_sql.dart';
+import 'package:flashcard/data/repository/flashcard_repository.dart';
+import 'package:flashcard/data/repository/practice_repository.dart';
 import 'package:flashcard/models/deck.dart';
 import 'package:flashcard/models/flashcard.dart';
 import 'package:flashcard/models/practice_session.dart';
@@ -11,7 +11,7 @@ import 'dart:math';
 class PracticeSessionScreen extends StatefulWidget {
   final Deck deck;
   final SessionType sessionType;
-  final int? sessionSize; 
+  final int? sessionSize;
   const PracticeSessionScreen({
     super.key,
     required this.sessionType,
@@ -24,8 +24,9 @@ class PracticeSessionScreen extends StatefulWidget {
 }
 
 class _PracticeSessionScreenState extends State<PracticeSessionScreen> {
-  final FlashcardRepositorySql flashcardRepositorySql = FlashcardRepositorySql();
-  final PracticeSessionRepositorySql practiceSessionRepositorySql = PracticeSessionRepositorySql();
+  final FlashcardRepository flashcardRepository = FlashcardRepository();
+  final PracticeSessionRepository practiceSessionRepository =
+      PracticeSessionRepository();
   int _currentIndex = 0;
   int _knowCount = 0;
   int _dontKnowCount = 0;
@@ -45,12 +46,11 @@ class _PracticeSessionScreenState extends State<PracticeSessionScreen> {
 
     return _pickCards();
   }
-  
-  //pick card for the special session 
-  List<Flashcard> _pickCards() {
 
+  //pick card for the special session
+  List<Flashcard> _pickCards() {
     //this list will take all the card base on the difficulty level base on enum value
-    //easy 1 time, it will add one card to the list 
+    //easy 1 time, it will add one card to the list
     //muedium 3 time, it will add two card to the list
     List<Flashcard> pool = [];
     for (var card in widget.deck.flashcards) {
@@ -60,7 +60,7 @@ class _PracticeSessionScreenState extends State<PracticeSessionScreen> {
     }
 
     pool.shuffle();
-    //random pick the card until the size is full and return it as a list 
+    //random pick the card until the size is full and return it as a list
     final random = Random();
     List<Flashcard> picked = [];
 
@@ -78,17 +78,17 @@ class _PracticeSessionScreenState extends State<PracticeSessionScreen> {
     } else {
       _dontKnowCount++;
       flashcard.difficultyScore += 1;
-    } 
+    }
 
     //update flashcard difficulty after each answer
-    await flashcardRepositorySql.updateFlashcardDifficulty(flashcard);
+    await flashcardRepository.updateFlashcardDifficulty(flashcard);
 
     if (_currentIndex < _flashcards.length - 1) {
       setState(() {
         _currentIndex++;
       });
     } else {
-      await practiceSessionRepositorySql.addSession(
+      await practiceSessionRepository.addSession(
         PracticeSession(
           null,
           widget.deck.name,
@@ -156,10 +156,7 @@ class _PracticeSessionScreenState extends State<PracticeSessionScreen> {
             Container(
               margin: const EdgeInsets.all(20),
               padding: const EdgeInsets.all(32),
-              child: PracticeItem(
-                flashcard: flashcard,
-                
-              ),
+              child: PracticeItem(flashcard: flashcard),
             ),
 
             Row(
