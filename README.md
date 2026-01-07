@@ -37,6 +37,25 @@ Cardify is an offline flashcard learning mobile application built with Flutter, 
 - Review recent practice sessions
 - Statistics dashboard with performance insights
 
+## App Screenshots
+
+<table>
+  <tr>
+    <td><img src="deck_screen.png" alt="Deck Screen" width="200"/></td>
+    <td><img src="flashcard_screen.png" alt="Flashcard Screen" width="200"/></td>
+    <td><img src="practice_session_screen.png" alt="Practice Session" width="200"/></td>
+    <td><img src="result_screen.png" alt="Result Screen" width="200"/></td>
+    <td><img src="statistic_screen.png" alt="Statistics" width="200"/></td>
+  </tr>
+  <tr>
+    <td align="center"><b>Deck Screen</b><br/>Main dashboard with decks</td>
+    <td align="center"><b>Flashcard Screen</b><br/>Manage flashcards</td>
+    <td align="center"><b>Practice Session</b><br/>Interactive study mode</td>
+    <td align="center"><b>Result Screen</b><br/>Session summary</td>
+    <td align="center"><b>Statistics</b><br/>Progress tracking</td>
+  </tr>
+</table>
+
 ## Diagrams
 
 ### Class Diagram - Domain Models
